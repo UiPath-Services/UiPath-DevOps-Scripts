@@ -10,20 +10,20 @@ More and more customers are requesting integrations to other platforms like GitL
 Until a generic solution is officially released, this unofficial library of DevOps PowerShell scripts will support customers to integrate CI/CD into their workflows and allow them to package, deploy and run automations and tests.
 
 ## Prerequisite:
-1) Download uipath cli (in the provisioned machine)
+1) Download uipath cli (in the provisioned machine) 
  ```PowerShell
  New-Item -Path "C:\\" -ItemType "directory" -Name "uipathcli";
-Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7758.25166" -OutFile "C:\\uipathcli\\cli.zip";
-Expand-Archive -LiteralPath "C:\\uipathcli\\cli.Zip" -DestinationPath "C:\\uipathcli";
+ Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7758.25166" -OutFile "C:\\uipathcli\\cli.zip";
+ Expand-Archive -LiteralPath "C:\\uipathcli\\cli.Zip" -DestinationPath "C:\\uipathcli";
 ```
 2) Download powershell scripts
 
 > -**Note: Links to the scripts below may not work for you because this repository is not public. For testing purpose you can grab copy of the scripts from the scripts folder and upload it anywhere where it should be accessable by the agent (provisioned machine)**
 ```Powershell
-Invoke-WebRequest "https://github.com/magarenzo/UiPath-DevOps-Scripts/blob/abdullah_patch1/scripts/UiPathPack.ps1"  -OutFile "C:\\scripts\\UiPathPack.ps1";
-Invoke-WebRequest "https://github.com/magarenzo/UiPath-DevOps-Scripts/blob/abdullah_patch1/scripts/UiPathDeploy.ps1"  -OutFile "C:\\scripts\\UiPathDeploy.ps1";
-Invoke-WebRequest "https://github.com/magarenzo/UiPath-DevOps-Scripts/blob/abdullah_patch1/scripts/UiPathJobRun.ps1"  -OutFile "C:\\scripts\\UiPathJobRun.ps1";
-Invoke-WebRequest "https://github.com/magarenzo/UiPath-DevOps-Scripts/blob/abdullah_patch1/scripts/UiPathRunTest.ps1"  -OutFile "C:\\scripts\\UiPathRunTest.ps1";
+Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-CICD-Integration/main/scripts/UiPathPack.ps1"  -OutFile "C:\\scripts\\UiPathPack.ps1";
+Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-CICD-Integration/main/scripts/UiPathDeploy.ps1"  -OutFile "C:\\scripts\\UiPathDeploy.ps1";
+Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-CICD-Integration/main/scripts/UiPathJobRun.ps1"  -OutFile "C:\\scripts\\UiPathJobRun.ps1";
+Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-CICD-Integration/main/scripts/UiPathRunTest.ps1"  -OutFile "C:\\scripts\\UiPathRunTest.ps1";
 ```
 ## Powershell Scripts
 
