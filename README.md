@@ -5,12 +5,12 @@ Package, deploy and run automations and tests.
 
 ## Overview
 
-More and more customers are requesting integrations to other platforms like GitLab and Circle CI and UiPath is not able to create native plugins for all of them.
+More and more customers are requesting integrations of uipath platform to other platforms like GitLab and Circle CI and UiPath is not able to create native plugins for all of them.
 
 Until a generic solution is officially released, this unofficial library of DevOps PowerShell scripts will support customers to integrate CI/CD into their workflows and allow them to package, deploy and run automations and tests.
 
 ## Prerequisite:
-1) Download uipath cli (in the provisioned machine) 
+1) Download uipath cli (in the provisioned virtual machine or agent) 
  ```PowerShell
  New-Item -Path "C:\\" -ItemType "directory" -Name "uipathcli";
  Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7758.25166" -OutFile "C:\\uipathcli\\cli.zip";
