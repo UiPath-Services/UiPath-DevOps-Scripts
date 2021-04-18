@@ -10,7 +10,8 @@ More and more customers are requesting integrations of uipath platform to other 
 Until a generic solution is officially released, this unofficial library of DevOps PowerShell scripts will support customers to integrate CI/CD into their workflows and allow them to package, deploy and run automations and tests.
 
 ## Prerequisite:
-it is required that uipath cli and the powershell scripts are downloaded in the provisioned vm or agent before runing any of the scripts
+it is required that [UiPath CLI](https://www.myget.org/feed/uipath-dev/package/nuget/UiPath.CLI) and the powershell scripts are downloaded in the provisioned vm or agent before runing any of the scripts
+
 Use the scripts below as one step in your pipeline and give at any name (e.g. "Preparing Environment" )
  ```PowerShell
  New-Item -Path "C:\\" -ItemType "directory" -Name "uipathcli";
