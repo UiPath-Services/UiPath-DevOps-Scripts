@@ -18,10 +18,10 @@ Until a generic solution is officially released, this unofficial library of DevO
 ```
 2) Download PowerShell scripts
 ```Powershell
-Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-DevOps-Scripts/main/scripts/UiPathPack.ps1"  -OutFile "C:\\scripts\\UiPathPack.ps1";
-Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-DevOps-Scripts/main/scripts/UiPathDeploy.ps1"  -OutFile "C:\\scripts\\UiPathDeploy.ps1";
-Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-DevOps-Scripts/main/scripts/UiPathJobRun.ps1"  -OutFile "C:\\scripts\\UiPathJobRun.ps1";
-Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-DevOps-Scripts/main/scripts/UiPathRunTest.ps1"  -OutFile "C:\\scripts\\UiPathRunTest.ps1";
+Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathPack.ps1"  -OutFile "C:\\scripts\\UiPathPack.ps1";
+Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathDeploy.ps1"  -OutFile "C:\\scripts\\UiPathDeploy.ps1";
+Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathJobRun.ps1"  -OutFile "C:\\scripts\\UiPathJobRun.ps1";
+Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathRunTest.ps1"  -OutFile "C:\\scripts\\UiPathRunTest.ps1";
 ```
 ## Powershell Scripts
 
