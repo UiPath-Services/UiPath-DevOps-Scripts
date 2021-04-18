@@ -16,14 +16,12 @@ Until a generic solution is officially released, this unofficial library of DevO
  Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7758.25166" -OutFile "C:\\uipathcli\\cli.zip";
  Expand-Archive -LiteralPath "C:\\uipathcli\\cli.Zip" -DestinationPath "C:\\uipathcli";
 ```
-2) Download powershell scripts
-
-> -**Note: Links to the scripts below may not work for you because this repository is not public. For testing purpose you can grab copy of the scripts from the scripts folder and upload it anywhere where it should be accessable by the agent (provisioned machine)**
+2) Download PowerShell scripts
 ```Powershell
-Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-CICD-Integration/main/scripts/UiPathPack.ps1"  -OutFile "C:\\scripts\\UiPathPack.ps1";
-Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-CICD-Integration/main/scripts/UiPathDeploy.ps1"  -OutFile "C:\\scripts\\UiPathDeploy.ps1";
-Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-CICD-Integration/main/scripts/UiPathJobRun.ps1"  -OutFile "C:\\scripts\\UiPathJobRun.ps1";
-Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-CICD-Integration/main/scripts/UiPathRunTest.ps1"  -OutFile "C:\\scripts\\UiPathRunTest.ps1";
+Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-DevOps-Scripts/main/scripts/UiPathPack.ps1"  -OutFile "C:\\scripts\\UiPathPack.ps1";
+Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-DevOps-Scripts/main/scripts/UiPathDeploy.ps1"  -OutFile "C:\\scripts\\UiPathDeploy.ps1";
+Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-DevOps-Scripts/main/scripts/UiPathJobRun.ps1"  -OutFile "C:\\scripts\\UiPathJobRun.ps1";
+Invoke-WebRequest "https://raw.githubusercontent.com/SE-Abdullah/UiPath-DevOps-Scripts/main/scripts/UiPathRunTest.ps1"  -OutFile "C:\\scripts\\UiPathRunTest.ps1";
 ```
 ## Powershell Scripts
 
@@ -60,7 +58,7 @@ Examples:
 Trigger a job on Orchestrator
 ```PowerShell
 SYNTAX
-    . 'C:\scripts\UiPathJobRun.ps1' -processName <processName> <uriOrch> <tenantlName> [-accountName <abumayar> -userKey <userKey>] [-folder_organization_unit <folder_organization_unit>]
+    . 'C:\scripts\UiPathJobRun.ps1' -processName <processName> <uriOrch> <tenantlName> [-accountName <accountName> -userKey <userKey>] [-folder_organization_unit <folder_organization_unit>]
     . 'C:\scripts\UiPathJobRun.ps1' -processName <processName> <uriOrch> <tenantlName> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-folder_organization_unit <folder_organization_unit>]
 
 Example 1:
@@ -78,6 +76,7 @@ Examples:
     .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -project_path "C:\UiPath\Project\project.json" -environment TestingEnv
     .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -project_path "C:\UiPath\Project\project.json" -folder_organization_unit MyFolder
     .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -project_path "C:\UiPath\Project\project.json" -folder_organization_unit MyFolder -environment MyEnvironment
+
     .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -UserKey a7da29a2c93a717110a82 -account_name myAccount -testset "MyRobotTests"
     .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -UserKey a7da29a2c93a717110a82 -account_name myAccount -project_path "C:\UiPath\Project\project.json" -environment TestingEnv -out junit
     .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -UserKey a7da29a2c93a717110a82 -account_name myAccount -project_path "C:\UiPath\Project\project.json" -environment TestingEnv -result_path "C:\results.json" -out uipath -language en-US
@@ -94,9 +93,6 @@ Each script will log all output to its own `*.log` file and sometimes to the con
 [UiPath CLI](https://www.myget.org/feed/uipath-dev/package/nuget/UiPath.CLI)
 
 * Package Pack
-  
 * Package Deploy
-
 * Job Run
-
 * Test Run
