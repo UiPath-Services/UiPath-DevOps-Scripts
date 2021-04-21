@@ -53,7 +53,7 @@ SYNTAX:
 
   Examples:
     package pack "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package"
-    package pack "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -language 1.0.6820.22047
+    package pack "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -version 1.0.6820.22047
     package pack "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -autoVersion
     package pack "C:\UiPath\Project" -destination_folder "C:\UiPath\Package"
     package pack "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" --outputType Tests -language en-US
@@ -114,6 +114,8 @@ if($project_path -eq "" -or $destination_folder -eq "")
     exit 1
 }
 
+
+
 #Building uipath cli paramters
 $ParamList.Add("package")
 $ParamList.Add("pack")
@@ -157,7 +159,7 @@ if($version -ne ""){
     $ParamList.Add("-v")
     $ParamList.Add($version)
 }
-if($autoVersion -ne ""){
+if($PSBoundParameters.ContainsKey('autoVersion')) {
     $ParamList.Add("--autoVersion")
 }
 if($outputType -ne ""){
