@@ -12,7 +12,7 @@ Until a generic solution is officially released, this unofficial library of DevO
 ## Prerequisite:
 it is required that [UiPath CLI](https://www.myget.org/feed/uipath-dev/package/nuget/UiPath.CLI) and the powershell scripts are downloaded in the provisioned vm or agent before runing any of the scripts
 
-Use the scripts below as one step in your pipeline and give at any name (e.g. "Preparing Environment" )
+Use the scripts below as one step in your pipeline and give at any name (e.g. "Preparing Environment")
  ```PowerShell
  New-Item -Path "C:\\" -ItemType "directory" -Name "uipathcli";
  Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7758.25166" -OutFile "C:\\uipathcli\\cli.zip";
