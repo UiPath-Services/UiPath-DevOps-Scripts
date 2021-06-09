@@ -27,7 +27,7 @@ Use the scripts below as one step in your pipeline and give at any name (e.g. "P
 ## Powershell Scripts
 
 ### [UiPathPack](docs/UiPathPack.md) 
- Pack one or more projects into a package.
+ Pack one or more projects into a package. Click on the name for detailed documentation
 ```PowerShell
 SYNTAX
     . 'C:\scripts\UiPathPack.ps1' <project_path> -destination_folder <destination_folder> [-version <version>] [-autoVersion] [-outputType <Process|Library|Tests|Objects>] [-libraryOrchestratorUrl <orchestrator_url> -libraryOrchestratorTenant <orchestrator_tenant>] [-libraryOrchestratorUsername <orchestrator_user> -libraryOrchestratorPassword <orchestrator_pass>] [-libraryOrchestratorUserKey <UserKey> -libraryOrchestratorAccountName <account_name>] [-libraryOrchestratorFolder <folder>] [-language <language>] [-uipathCLI_Folder <cli folder>]
@@ -42,7 +42,7 @@ Examples:
 ```
 
 ###  [UiPathDeploy](docs/UiPathDeploy.md) 
-Deploy packages to an Orchestrator instance, optionally publishing them to a set of environments.
+Deploy packages to an Orchestrator instance, optionally publishing them to a set of environments. Click on the name for detailed documentation
 ```PowerShell
 SYNTAX
     . 'C:\scripts\UiPathDeploy.ps1' <packages_path> <orchestrator_url> <orchestrator_tenant> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <UserKey> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-environment_list <environment_list>] [-language <language>] [-uipathCLI_Folder <cli folder>]
@@ -56,7 +56,7 @@ Examples:
 
 ```
 ### [UiPathJobRun](docs/UiPathJobRun.md) 
-Trigger a job on Orchestrator
+Trigger a job on Orchestrator. Click on the name for detailed documentation
 ```PowerShell
 SYNTAX
     . 'C:\scripts\UiPathJobRun.ps1' -processName <processName> <uriOrch> <tenantlName> [-accountName <accountName> -userKey <userKey>] [-folder_organization_unit <folder_organization_unit>]
@@ -67,7 +67,7 @@ Example 1:
     . 'C:\scripts\UiPathJobRun.ps1' -processName SimpleRPAFlow -uriOrch https://cloud.uipath.com -tenantlName AbdullahTenant -accountName accountLogicalName -userKey xxxxxxxxxx -folder_organization_unit folderName
 ```
 ### [UiPathRunTest](docs/UiPathRunTest.md) 
-Tests a given package or runs a test set.
+Tests a given package or runs a test set. Click on the name for detailed documentation
 ```PowerShell
 SYNTAX
     .\UiPathRunTest.ps1 <orchestrator_url> <orchestrator_tenant> [-project_path <package>] [-testset <testset>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-environment <environment>] [-folder_organization_unit <folder_organization_unit>] [-language <language>] [-uipathCLI_Folder <cli folder>]

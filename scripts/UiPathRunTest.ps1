@@ -233,6 +233,6 @@ if($LASTEXITCODE -eq 0)
     WriteLog "Done!"
     Exit 0
 }else {
-    WriteLog "Unable to deploy project. Exit code $LASTEXITCODE"
+    WriteLog "Unable to Run Text. Exit code $LASTEXITCODE"
     Exit 1
 }
