@@ -68,6 +68,9 @@
 .PARAMETER disableTelemetry
     Disable telemetry data.
 
+.PARAMETER $uipathCLI_Folder
+    Default 'C:\uipathcli' folder. Update this if the folder path of the cli is different
+
 .EXAMPLE
 PS> .\UiPathJobRun -processName SimpleRPAFlow -uriOrch https://cloud.uipath.com -tenantlName AbdullahTenant -accountName acountLogicalName -userKey uYxxxxxxxx -folder_organization_unit MyWork-Dev 
 - (Cloud Example) Run a process named SimpleRPAFlow in folder MyWork-Dev 
@@ -108,7 +111,8 @@ Param (
     [string] $fail_when_job_fails = "", #The command fails when at least one job fails. (default true)
     [string] $wait = "", #The command waits for job runs completion. (default true)
     [string] $job_type = "", #The type of the job that will run. Values supported for this command: Unattended, NonProduction. For classic folders do not specify this argument
-    [string] $disableTelemetry = "" #Disable telemetry data.   
+    [string] $disableTelemetry = "", #Disable telemetry data.   
+    [string] $uipathCLI_Folder = "" #uipath cli root folder (Default: C:\uipathcli)
 
 )
 function WriteLog
@@ -128,9 +132,20 @@ function WriteLog
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $debugLog = "$scriptPath\orchestrator-job-run.log"
 
-$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe"
+$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe" #Default folder
+#update location if location of the cli is not in the default folder
+if($uipathCLI_Folder -ne ""){
+    if($uipathCLI_Folder.EndsWith("\\")){
+        $uipathCLI_Folder = $uipathCLI_Folder.Substring(0, $uipathCLI_Folder.Length - 2)
+    }
+    elseif($uipathCLI_Folder.EndsWith("\")){
+        $uipathCLI_Folder = $uipathCLI_Folder.Substring(0, $uipathCLI_Folder.Length - 1)
+    }
+
+    $uipathCLI = "$uipathCLI_Folder\lib\net461\uipcli.exe"
+}
 WriteLog "-----------------------------------------------------------------------------"
-WriteLog "uipcli location :  $uipathCLI"
+WriteLog "uipcli location :   $uipathCLI"
 
 $ParamList = New-Object 'Collections.Generic.List[string]'
 

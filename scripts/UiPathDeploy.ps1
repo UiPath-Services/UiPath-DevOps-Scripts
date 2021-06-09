@@ -38,6 +38,9 @@
 .PARAMETER disableTelemetry
     Disable telemetry data.
 
+.PARAMETER $uipathCLI_Folder
+    Default 'C:\uipathcli' folder. Update this if the folder path of the cli is different
+
 .EXAMPLE
 SYNTAX
     . '\UiPathDeploy.ps1' <packages_path> <orchestrator_url> <orchestrator_tenant> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <UserKey> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-environment_list <environment_list>] [-language <language>]
@@ -65,8 +68,8 @@ Param (
 	[string] $folder_organization_unit = "", #The Orchestrator folder (organization unit).
 	[string] $language = "", #The orchestrator language.  
     [string] $environment_list = "", #The comma-separated list of environments to deploy the package to. If the environment does not belong to the default folder (organization unit) it must be prefixed with the folder name, e.g. AccountingTeam\TestEnvironment
-    [string] $disableTelemetry = "" #Disable telemetry data.   
-
+    [string] $disableTelemetry = "", #Disable telemetry data.   
+    [string] $uipathCLI_Folder = "" #uipath cli parent folder (Default: C:\uipathcli)
     
 
 )
@@ -87,7 +90,19 @@ function WriteLog
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $debugLog = "$scriptPath\orchestrator-package-deploy.log"
 
-$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe"
+$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe" #Default folder
+#update location if location of the cli is not in the default folder
+if($uipathCLI_Folder -ne ""){
+    if($uipathCLI_Folder.EndsWith("\\")){
+        $uipathCLI_Folder = $uipathCLI_Folder.Substring(0, $uipathCLI_Folder.Length - 2)
+    }
+    elseif($uipathCLI_Folder.EndsWith("\")){
+        $uipathCLI_Folder = $uipathCLI_Folder.Substring(0, $uipathCLI_Folder.Length - 1)
+    }
+
+    $uipathCLI = "$uipathCLI_Folder\lib\net461\uipcli.exe"
+}
+
 WriteLog "-----------------------------------------------------------------------------"
 WriteLog "uipcli location :   $uipathCLI"
 

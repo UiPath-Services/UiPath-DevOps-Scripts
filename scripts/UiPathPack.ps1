@@ -80,7 +80,8 @@ Param (
     [string] $version = "", #Package version.
     [switch] $autoVersion, #Auto-generate package version.
     [string] $outputType = "", #Force the output to a specific type.  
-    [string] $disableTelemetry = "" #Disable telemetry data.   
+    [string] $disableTelemetry = "", #Disable telemetry data.   
+    [string] $uipathCLI_Folder = "" #uipath cli root folder (Default: C:\uipathcli)
 
     
 
@@ -102,9 +103,20 @@ function WriteLog
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $debugLog = "$scriptPath\orchestrator-package-pack.log"
 
-$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe"
+$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe" #Default folder
+#update location if location of the cli is not in the default folder
+if($uipathCLI_Folder -ne ""){
+    if($uipathCLI_Folder.EndsWith("\\")){
+        $uipathCLI_Folder = $uipathCLI_Folder.Substring(0, $uipathCLI_Folder.Length - 2)
+    }
+    elseif($uipathCLI_Folder.EndsWith("\")){
+        $uipathCLI_Folder = $uipathCLI_Folder.Substring(0, $uipathCLI_Folder.Length - 1)
+    }
+
+    $uipathCLI = "$uipathCLI_Folder\lib\net461\uipcli.exe"
+}
 WriteLog "-----------------------------------------------------------------------------"
-WriteLog "uipcli location :  $uipathCLI"
+WriteLog "uipcli location :   $uipathCLI"
 
 $ParamList = New-Object 'Collections.Generic.List[string]'
 
