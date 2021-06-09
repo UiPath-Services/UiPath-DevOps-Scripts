@@ -69,7 +69,7 @@ Param (
 	[string] $language = "", #The orchestrator language.  
     [string] $environment_list = "", #The comma-separated list of environments to deploy the package to. If the environment does not belong to the default folder (organization unit) it must be prefixed with the folder name, e.g. AccountingTeam\TestEnvironment
     [string] $disableTelemetry = "", #Disable telemetry data.   
-    [string] $uipathCLI_Folder = "" #uipath cli parent folder (Default: C:\uipathcli)
+    [string] $uipathCLI_Folder = "" #uipath cli root folder (Default: C:\uipathcli)
     
 
 )
@@ -102,7 +102,6 @@ if($uipathCLI_Folder -ne ""){
 
     $uipathCLI = "$uipathCLI_Folder\lib\net461\uipcli.exe"
 }
-
 WriteLog "-----------------------------------------------------------------------------"
 WriteLog "uipcli location :   $uipathCLI"
 

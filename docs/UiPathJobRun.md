@@ -4,7 +4,7 @@ Trigger a job on Orchestrator
 ```PowerShell
 SYNTAX
     . 'C:\scripts\UiPathJobRun.ps1' -processName <processName> <uriOrch> <tenantlName> [-accountName <abumayar> -userKey <userKey>] [-folder_organization_unit <folder_organization_unit>]
-    . 'C:\scripts\UiPathJobRun.ps1' -processName <processName> <uriOrch> <tenantlName> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-folder_organization_unit <folder_organization_unit>]
+    . 'C:\scripts\UiPathJobRun.ps1' -processName <processName> <uriOrch> <tenantlName> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-folder_organization_unit <folder_organization_unit>] [-$uipathCLI_Folder <cli folder>]
 
 Example 1:
 
@@ -76,3 +76,6 @@ Script Parameters
 
 -  `disableTelemetry`
     Disable telemetry data.
+
+-  `uipathCLI_Folder`
+    Default 'C:\uipathcli' folder. Update this if the folder path of the cli is different

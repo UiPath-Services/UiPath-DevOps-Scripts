@@ -47,6 +47,9 @@
 .PARAMETER disableTelemetry
     Disable telemetry data.
 
+.PARAMETER $uipathCLI_Folder
+    Default 'C:\uipathcli' folder. Update this if the folder path of the cli is different
+    
 .EXAMPLE
 SYNTAX:
     .\UiPathPack.ps1 <project_path> -destination_folder <destination_folder> [-version <version>] [-autoVersion] [--outputType <Process|Library|Tests|Objects>] [--libraryOrchestratorUrl <orchestrator_url> --libraryOrchestratorTenant <orchestrator_tenant>] [--libraryOrchestratorUsername <orchestrator_user> --libraryOrchestratorPassword <orchestrator_pass>] [--libraryOrchestratorUserKey <UserKey> --libraryOrchestratorAccountName <account_name>] [--libraryOrchestratorFolder <folder>] [-language <language>]

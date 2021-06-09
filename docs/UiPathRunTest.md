@@ -3,7 +3,7 @@
 Tests a given package or runs a test set.
 ```PowerShell
 SYNTAX
-    . 'C:\scripts\UiPathRunTest.ps1' <orchestrator_url> <orchestrator_tenant> [-project_path <package>] [-testset <testset>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-environment <environment>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
+    . 'C:\scripts\UiPathRunTest.ps1' <orchestrator_url> <orchestrator_tenant> [-project_path <package>] [-testset <testset>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-environment <environment>] [-folder_organization_unit <folder_organization_unit>] [-language <language>] [-$uipathCLI_Folder <cli folder>]
 
 Examples:
     . 'C:\scripts\UiPathRunTest.ps1' "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -S "MyRobotTests"
@@ -60,3 +60,6 @@ Script Parameters
 
 - `disableTelemetry`
     Disable telemetry data.
+
+-  `uipathCLI_Folder`
+    Default 'C:\uipathcli' folder. Update this if the folder path of the cli is different
