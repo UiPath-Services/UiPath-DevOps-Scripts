@@ -24,12 +24,13 @@ Script Parameters
      Manage assets operation either 'delete' or  'deploy'
 
 -  `$assets_file` 
-     The following is a sample csv file. The column names are required! Only the first column is used but you need to at least have empty columns in place.
-                        name,type,value
-                        asset_1_name,boolean,false # we can have comments
-                        asset_2_name,integer,
-                        asset_3_name,text,
-                        asset_4_name,credential,username::password
+     The following is a sample csv file. The column names are required! Only the first column is used but you need to at least have empty columns in place.  
+        <pre>name,type,value  
+        asset_1_name,boolean,false # we can have comments  
+        asset_2_name,integer,  
+        asset_3_name,text,  
+        asset_4_name,credential,username::password  
+        </pre>
 
 -  `orchestrator_url`
     Required. The URL of the Orchestrator instance.
