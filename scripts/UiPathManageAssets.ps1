@@ -1,18 +1,29 @@
 <#
 .SYNOPSIS 
-    Deploy NuGet package files to orchestrator
+    Delete assets from an Orchestrator instance (based on asset name).
+    Deploy assets to an Orchestrator instance.
 
 .DESCRIPTION 
-    This script is to deploy NuGet package files (*.nupkg) to Cloud or On-Prem orchestrator.
+    Delete assets from an Orchestrator instance (based on asset name).
+    Deploy assets to an Orchestrator instance.
 
-.PARAMETER packages_path 
-     Required. The path to a folder containing packages, or to a package file.
+.PARAMETER $operation 
+    Manage assets operation (delete | deploy) 
+
+.PARAMETER $assets_file 
+     The following is a sample csv file. The column names are required! Only the first column is used but you need to at least have empty columns in place.
+                                  name,type,value
+                                  asset_1_name,boolean,false # we can have comments
+                                  asset_2_name,integer,
+                                  asset_3_name,text,
+                                  asset_4_name,credential,username::password
 
 .PARAMETER orchestrator_url 
     Required. The URL of the Orchestrator instance.
 
 .PARAMETER orchestrator_tenant 
     Required. The tenant of the Orchestrator instance.
+
 
 .PARAMETER orchestrator_user
     Required. The Orchestrator username used for authentication. Must be used together with the password.
@@ -29,8 +40,6 @@
 .PARAMETER folder_organization_unit
     The Orchestrator folder (organization unit).
 
-.PARAMETER environment_list
-    The comma-separated list of environments to deploy the package to. If the environment does not belong to the default folder (organization unit) it must be prefixed with the folder name, e.g. AccountingTeam\TestEnvironment
 
 .PARAMETER language
     The orchestrator language.
@@ -39,19 +48,25 @@
     Disable telemetry data.
 
 .EXAMPLE
-SYNTAX
-    . '\UiPathDeploy.ps1' <packages_path> <orchestrator_url> <orchestrator_tenant> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <UserKey> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-environment_list <environment_list>] [-language <language>]
-Examples:
-    . '\UiPathDeploy.ps1' "C:\UiPath\Project 1" "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456
-    . '\UiPathDeploy.ps1' "C:\UiPath\Project\Package.1.0.6820.22047.nupkg" "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit OurOrganization
-    . '\UiPathDeploy.ps1' "C:\UiPath\Project\Package.1.0.6820.22047.nupkg" "https://uipath-orchestrator.myorg.com" default -UserKey a7da29a2c93a717110a82 -account_name myAccount
-    . '\UiPathDeploy.ps1' "C:\UiPath\Project\TestsPackage.1.0.6820.22047.nupkg" "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -environment_list SAPEnvironment,ExcelAutomationEnvironment -language en-US
+.\UiPathManageAssets.ps1 <operation> <assets_file.csv> <orchestrator_url> <orchestrator_tenant> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
+
+  Examples (Deploy Assets):
+    .\UiPathManageAssets.ps1 deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456
+    .\UiPathManageAssets.ps1 deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit OurOrganization
+    .\UiPathManageAssets.ps1 deploy assets_file.csv "https://cloud.uipath.com" defaultTenant -UserKey a7da29a2c93a717110a82 -account_name myAccount -language en-US
+  
+  Examples (Delete Assets):
+    .\UiPathManageAssets.ps1 delete assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456
+    .\UiPathManageAssets.ps1 delete assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit OurOrganization
+    .\UiPathManageAssets.ps1 delete assets_file.csv "https://cloud.uipath.com" defaultTenant -UserKey a7da29a2c93a717110a82 -account_name myAccount -language en-US
 #>
 Param (
 
     #Required
-	[string] $packages_path = "", # Required. The path to a folder containing packages, or to a package file.
-	[string] $orchestrator_url = "", #Required. The URL of the Orchestrator instance.
+	[string] $operation = "", #Manage assets operation (delete | deploy) 
+	[string] $assets_file = "", #Assets file
+    
+    [string] $orchestrator_url = "", #Required. The URL of the Orchestrator instance.
 	[string] $orchestrator_tenant = "", #Required. The tenant of the Orchestrator instance.
 
     #cloud - Required
@@ -63,11 +78,9 @@ Param (
 	[string] $orchestrator_pass = "", #Required. The Orchestrator password used for authentication. Must be used together with the username
 	
 	[string] $folder_organization_unit = "", #The Orchestrator folder (organization unit).
-	[string] $language = "", #The orchestrator language.  
-    [string] $environment_list = "", #The comma-separated list of environments to deploy the package to. If the environment does not belong to the default folder (organization unit) it must be prefixed with the folder name, e.g. AccountingTeam\TestEnvironment
-    [string] $disableTelemetry = "" #Disable telemetry data.   
-    
-    
+	[string] $language = "", #-l, --language                  The orchestrator language.  
+    [string] $disableTelemetry = "", #-y, --disableTelemetry          Disable telemetry data.   
+    [string] $timeout = "" # The time in seconds for waiting to finish test set executions. (default 7200) 
 
 )
 function WriteLog
@@ -85,7 +98,8 @@ function WriteLog
 	}
 }
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$debugLog = "$scriptPath\orchestrator-package-deploy.log"
+$debugLog = "$scriptPath\orchestrator-test-run.log"
+
 
 #Verifying UiPath CLI folder
 $uipathCLI = "$scriptPath\uipathcli\lib\net461\uipcli.exe"
@@ -112,12 +126,28 @@ WriteLog "uipcli location :   $uipathCLI"
 
 $ParamList = New-Object 'Collections.Generic.List[string]'
 
-if($packages_path -eq "" -or $orchestrator_url -eq "" -or $orchestrator_tenant -eq "") 
+
+if($operation -ne "delete" -and $operation -ne "deploy"){
+    WriteLog "invalid operation. operation must either be 'delete' or 'deploy'. You typed '$operation'"
+    exit 1
+}
+
+#full path of asset file
+if(-not($assets_file.Contains("\")))
+{
+    $assets_file = "$scriptPath\$assets_file"
+}
+if (-not(Test-Path -Path $assets_file -PathType Leaf)) {
+    WriteLog "asset file does not exist ($assets_file)"
+    exit 1
+}
+if($orchestrator_url -eq "" -or $orchestrator_tenant -eq "") 
 {
     WriteLog "Fill the required paramters"
     exit 1
 }
 
+#required parameters (Cloud accountName and userkey) or (on-prem username and password) 
 if($account_name -eq "" -or $UserKey -eq "")
 {
     if($orchestrator_user -eq "" -or $orchestrator_pass -eq "")
@@ -128,10 +158,15 @@ if($account_name -eq "" -or $UserKey -eq "")
     }
 }
 
+if($project_path -eq "" -and $testset -eq "")
+{
+    WriteLog "Either TestSet or Project path is required to fill"
+    exit 1
+}
 #Building uipath cli paramters
-$ParamList.Add("package")
-$ParamList.Add("deploy")
-$ParamList.Add($packages_path)
+$ParamList.Add("asset")
+$ParamList.Add("$operation")
+$ParamList.Add($assets_file)
 $ParamList.Add($orchestrator_url)
 $ParamList.Add($orchestrator_tenant)
 
@@ -142,7 +177,6 @@ if($account_name -ne ""){
 if($UserKey -ne ""){
     $ParamList.Add("-t")
     $ParamList.Add($UserKey)
-
 }
 if($orchestrator_user -ne ""){
     $ParamList.Add("-u")
@@ -156,11 +190,6 @@ if($folder_organization_unit -ne ""){
     $ParamList.Add("-o")
     $ParamList.Add($folder_organization_unit)
 }
-if($environment_list -ne ""){
-    $ParamList.Add("-e")
-    $ParamList.Add($environment_list)
-}
-
 if($language -ne ""){
     $ParamList.Add("-l")
     $ParamList.Add($language)
@@ -171,7 +200,8 @@ if($disableTelemetry -ne ""){
     $ParamList.Add($disableTelemetry)
 }
 
-#mask sensitive info before logging 
+
+#mask sensitive infos before loging
 $ParamMask = New-Object 'Collections.Generic.List[string]'
 $ParamMask.AddRange($ParamList)
 $secretIndex = $ParamMask.IndexOf("-p");
@@ -194,6 +224,6 @@ if($LASTEXITCODE -eq 0)
     WriteLog "Done!"
     Exit 0
 }else {
-    WriteLog "Unable to deploy project. Exit code $LASTEXITCODE"
+    WriteLog "Unable to execute command. Exit code $LASTEXITCODE"
     Exit 1
 }

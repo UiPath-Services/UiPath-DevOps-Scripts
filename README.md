@@ -10,18 +10,30 @@ More and more customers are requesting integrations of uipath platform to other 
 Until a generic solution is officially released, this unofficial library of DevOps PowerShell scripts will support customers to integrate CI/CD into their workflows and allow them to package, deploy and run automations and tests.
 
 ## Prerequisite:
-it is required that [UiPath CLI](https://www.myget.org/feed/uipath-dev/package/nuget/UiPath.CLI) and the powershell scripts are downloaded in the provisioned vm or agent before runing any of the scripts
 
+- the provisioned vm or agent should be a window machine
+- add a step in your CI/CD pipepline to download the descired scripts. (Downlod only the scripts you need, for example if you want to Pack an RPA project then download UiPathPack script)
 Use the scripts below as one step in your pipeline and give at any name (e.g. "Preparing Environment")
  ```PowerShell
- New-Item -Path "C:\\" -ItemType "directory" -Name "uipathcli";
- Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7758.25166" -OutFile "C:\\uipathcli\\cli.zip";
- Expand-Archive -LiteralPath "C:\\uipathcli\\cli.Zip" -DestinationPath "C:\\uipathcli";
+ #Create scripts folder under C drive. (you can change the directory path )
  New-Item -Path "C:\\" -ItemType "directory" -Name "scripts";
  Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathPack.ps1"  -OutFile "C:\\scripts\\UiPathPack.ps1";
  Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathDeploy.ps1"  -OutFile "C:\\scripts\\UiPathDeploy.ps1";
  Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathJobRun.ps1"  -OutFile "C:\\scripts\\UiPathJobRun.ps1";
  Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathRunTest.ps1"  -OutFile "C:\\scripts\\UiPathRunTest.ps1";
+  Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathManageAssets.ps1"  -OutFile "C:\\scripts\\UiPathManageAssets.ps1";
+```
+
+Some CI/CD tool may not allow the creation of folder outside the build/working directory like gitlab. For this you need to place the folder and scripts inside the build directory (See example below). 
+The environment variable `$env:CI_PROJECT_DIR` is environment variable for the project directory. Replace it with the relevant variable in your CI/CD tool. 
+ ```PowerShell
+ #Create scripts folder under C drive. (you can change the directory path )
+ New-Item -Path "$env:CI_PROJECT_DIR" -ItemType "directory" -Name "scripts";
+ Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathPack.ps1"  -OutFile "$env:CI_PROJECT_DIR\\scripts\\UiPathPack.ps1";
+ Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathDeploy.ps1"  -OutFile "$env:CI_PROJECT_DIR\\scripts\\UiPathDeploy.ps1";
+ Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathJobRun.ps1"  -OutFile "$env:CI_PROJECT_DIR\\scripts\\UiPathJobRun.ps1";
+ Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathRunTest.ps1"  -OutFile "$env:CI_PROJECT_DIR\\scripts\\UiPathRunTest.ps1";
+  Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathManageAssets.ps1"  -OutFile "$env:CI_PROJECT_DIR\\scripts\\UiPathManageAssets.ps1";
 ```
 
 ## Powershell Scripts

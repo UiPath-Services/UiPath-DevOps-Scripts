@@ -50,8 +50,6 @@
 .PARAMETER disableTelemetry
     Disable telemetry data.
 
-.PARAMETER $uipathCLI_Folder
-    Default 'C:\uipathcli' folder. Update this if the folder path of the cli is different
 
 .EXAMPLE
 .\UiPathRunTest.ps1 <orchestrator_url> <orchestrator_tenant> [-project_path <package>] [-testset <testset>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-environment <environment>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
@@ -89,8 +87,7 @@ Param (
     [string] $environment = "", #The environment to deploy the package to. Must be used together with the project path. Required when not using a modern folder.
     [string] $disableTelemetry = "", #-y, --disableTelemetry          Disable telemetry data.   
     [string] $timeout = "", # The time in seconds for waiting to finish test set executions. (default 7200) 
-    [string] $out = "", #Type of result file
-    [string] $uipathCLI_Folder = "" #uipath cli root folder (Default: C:\uipathcli)
+    [string] $out = "" #Type of result file
 )
 function WriteLog
 {
@@ -109,17 +106,25 @@ function WriteLog
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $debugLog = "$scriptPath\orchestrator-test-run.log"
 
-$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe" #Default folder
-#update location if location of the cli is not in the default folder
-if($uipathCLI_Folder -ne ""){
-    if($uipathCLI_Folder.EndsWith("\\")){
-        $uipathCLI_Folder = $uipathCLI_Folder.Substring(0, $uipathCLI_Folder.Length - 2)
+#Verifying UiPath CLI folder
+$uipathCLI = "$scriptPath\uipathcli\lib\net461\uipcli.exe"
+if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+    WriteLog "UiPath CLI does not exist in this folder. Attempting to download it..."
+    try {
+        New-Item -Path "$scriptPath" -ItemType "directory" -Name "uipathcli";
+        Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7802.11617" -OutFile "$scriptPath\\uipathcli\\cli.zip";
+        Expand-Archive -LiteralPath "$scriptPath\\uipathcli\\cli.zip" -DestinationPath "$scriptPath\\uipathcli";
+        WriteLog "UiPath CLI is downloaded and extracted in folder $scriptPath\\uipathcli"
+        if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+            WriteLog "Unable to locate uipath cli after it is downloaded."
+            exit 1
+        }
     }
-    elseif($uipathCLI_Folder.EndsWith("\")){
-        $uipathCLI_Folder = $uipathCLI_Folder.Substring(0, $uipathCLI_Folder.Length - 1)
+    catch {
+        WriteLog ("Error Occured : " + $_.Exception.Message) -err $_.Exception
+        exit 1
     }
-
-    $uipathCLI = "$uipathCLI_Folder\lib\net461\uipcli.exe"
+    
 }
 WriteLog "-----------------------------------------------------------------------------"
 WriteLog "uipcli location :   $uipathCLI"
