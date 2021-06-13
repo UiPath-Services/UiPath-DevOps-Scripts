@@ -67,3 +67,5 @@ Each script will log all output to its own `*.log` file and sometimes to the con
 * Package Deploy
 * Job Run
 * Test Run
+* asset delete
+* asset deploy

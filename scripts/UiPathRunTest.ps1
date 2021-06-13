@@ -164,7 +164,7 @@ if($project_path -ne ""){
     $ParamList.Add($project_path)
 }
 if($testset -ne ""){
-    $ParamList.Add("-S")
+    $ParamList.Add("-s")
     $ParamList.Add($testset)
 }
 if($result_path -ne ""){
