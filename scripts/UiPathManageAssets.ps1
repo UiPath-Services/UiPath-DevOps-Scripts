@@ -1,7 +1,6 @@
 <#
 .SYNOPSIS 
-    Delete assets from an Orchestrator instance (based on asset name).
-    Deploy assets to an Orchestrator instance.
+    Manage uipath orchestrator assets
 
 .DESCRIPTION 
     Delete assets from an Orchestrator instance (based on asset name).
@@ -48,17 +47,18 @@
     Disable telemetry data.
 
 .EXAMPLE
-.\UiPathManageAssets.ps1 <operation> <assets_file.csv> <orchestrator_url> <orchestrator_tenant> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
+SYNTAX
+    . 'C:\scripts\UiPathManageAssets.ps1' <operation> <assets_file.csv> <orchestrator_url> <orchestrator_tenant> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
 
   Examples (Deploy Assets):
-    .\UiPathManageAssets.ps1 deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456
-    .\UiPathManageAssets.ps1 deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit OurOrganization
-    .\UiPathManageAssets.ps1 deploy assets_file.csv "https://cloud.uipath.com" defaultTenant -UserKey a7da29a2c93a717110a82 -account_name myAccount -language en-US
+    . 'C:\scripts\UiPathManageAssets.ps1' deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456
+    . 'C:\scripts\UiPathManageAssets.ps1' deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit OurOrganization
+    . 'C:\scripts\UiPathManageAssets.ps1' deploy assets_file.csv "https://cloud.uipath.com" defaultTenant -UserKey a7da29a2c93a717110a82 -account_name myAccount -language en-US
   
   Examples (Delete Assets):
-    .\UiPathManageAssets.ps1 delete assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456
-    .\UiPathManageAssets.ps1 delete assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit OurOrganization
-    .\UiPathManageAssets.ps1 delete assets_file.csv "https://cloud.uipath.com" defaultTenant -UserKey a7da29a2c93a717110a82 -account_name myAccount -language en-US
+    . 'C:\scripts\UiPathManageAssets.ps1' delete assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456
+    . 'C:\scripts\UiPathManageAssets.ps1' delete assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit OurOrganization
+    . 'C:\scripts\UiPathManageAssets.ps1' delete assets_file.csv "https://cloud.uipath.com" defaultTenant -UserKey a7da29a2c93a717110a82 -account_name myAccount -language en-US
 #>
 Param (
 
