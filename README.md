@@ -56,6 +56,7 @@ Examples:
 
     #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
+---
 
 ###  [UiPathDeploy](docs/UiPathDeploy.md) 
 Deploy packages to an Orchestrator instance, optionally publishing them to a set of environments. Click on the name for detailed documentation
@@ -71,6 +72,8 @@ Examples:
 
     #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
+---
+
 ### [UiPathJobRun](docs/UiPathJobRun.md) 
 Trigger a job on Orchestrator. Click on the name for detailed documentation
 ```PowerShell
@@ -84,6 +87,8 @@ Example 1:
 
     #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
+---
+
 ### [UiPathRunTest](docs/UiPathRunTest.md) 
 Tests a given package or runs a test set. Click on the name for detailed documentation
 ```PowerShell
@@ -102,6 +107,7 @@ Examples:
     #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 
 ```
+---
 
 ###  [UiPathManageAssets](docs/UiPathManageAssets.md) 
 Deploy packages to an Orchestrator instance, optionally publishing them to a set of environments. Click on the name for detailed documentation
