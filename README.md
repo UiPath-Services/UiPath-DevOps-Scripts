@@ -41,7 +41,7 @@ Some CI/CD tool, like gitlab, may not allow the creation of folder outside the b
 
 ## Powershell Scripts
 
-Five avilable scripts can be utilized 
+Five available scripts can be utilized 
 
 | Script  | Description |
 | ------------- | ------------- |
