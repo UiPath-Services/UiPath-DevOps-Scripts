@@ -68,6 +68,7 @@
 .PARAMETER disableTelemetry
     Disable telemetry data.
 
+
 .EXAMPLE
 PS> .\UiPathJobRun -processName SimpleRPAFlow -uriOrch https://cloud.uipath.com -tenantlName AbdullahTenant -accountName acountLogicalName -userKey uYxxxxxxxx -folder_organization_unit MyWork-Dev 
 - (Cloud Example) Run a process named SimpleRPAFlow in folder MyWork-Dev 
@@ -75,7 +76,6 @@ PS> .\UiPathJobRun -processName SimpleRPAFlow -uriOrch https://cloud.uipath.com 
 .EXAMPLE
 PS> .\UiPathJobRun -processName SimpleRPAFlow -uriOrch https://myorch.company.com -tenantlName AbdullahTenant -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit MyWork-Dev 
 - (On Prem Example) Run a process named SimpleRPAFlow in folder MyWork-Dev 
-
 
 
 #>
@@ -128,9 +128,28 @@ function WriteLog
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $debugLog = "$scriptPath\orchestrator-job-run.log"
 
-$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe"
+#Verifying UiPath CLI folder
+$uipathCLI = "$scriptPath\uipathcli\lib\net461\uipcli.exe"
+if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+    WriteLog "UiPath CLI does not exist in this folder. Attempting to download it..."
+    try {
+        New-Item -Path "$scriptPath" -ItemType "directory" -Name "uipathcli";
+        Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7802.11617" -OutFile "$scriptPath\\uipathcli\\cli.zip";
+        Expand-Archive -LiteralPath "$scriptPath\\uipathcli\\cli.zip" -DestinationPath "$scriptPath\\uipathcli";
+        WriteLog "UiPath CLI is downloaded and extracted in folder $scriptPath\\uipathcli"
+        if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+            WriteLog "Unable to locate uipath cli after it is downloaded."
+            exit 1
+        }
+    }
+    catch {
+        WriteLog ("Error Occured : " + $_.Exception.Message) -err $_.Exception
+        exit 1
+    }
+    
+}
 WriteLog "-----------------------------------------------------------------------------"
-WriteLog "uipcli location :  $uipathCLI"
+WriteLog "uipcli location :   $uipathCLI"
 
 $ParamList = New-Object 'Collections.Generic.List[string]'
 

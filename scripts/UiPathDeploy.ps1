@@ -66,7 +66,7 @@ Param (
 	[string] $language = "", #The orchestrator language.  
     [string] $environment_list = "", #The comma-separated list of environments to deploy the package to. If the environment does not belong to the default folder (organization unit) it must be prefixed with the folder name, e.g. AccountingTeam\TestEnvironment
     [string] $disableTelemetry = "" #Disable telemetry data.   
-
+    
     
 
 )
@@ -87,7 +87,26 @@ function WriteLog
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $debugLog = "$scriptPath\orchestrator-package-deploy.log"
 
-$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe"
+#Verifying UiPath CLI folder
+$uipathCLI = "$scriptPath\uipathcli\lib\net461\uipcli.exe"
+if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+    WriteLog "UiPath CLI does not exist in this folder. Attempting to download it..."
+    try {
+        New-Item -Path "$scriptPath" -ItemType "directory" -Name "uipathcli";
+        Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7802.11617" -OutFile "$scriptPath\\uipathcli\\cli.zip";
+        Expand-Archive -LiteralPath "$scriptPath\\uipathcli\\cli.zip" -DestinationPath "$scriptPath\\uipathcli";
+        WriteLog "UiPath CLI is downloaded and extracted in folder $scriptPath\\uipathcli"
+        if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+            WriteLog "Unable to locate uipath cli after it is downloaded."
+            exit 1
+        }
+    }
+    catch {
+        WriteLog ("Error Occured : " + $_.Exception.Message) -err $_.Exception
+        exit 1
+    }
+    
+}
 WriteLog "-----------------------------------------------------------------------------"
 WriteLog "uipcli location :   $uipathCLI"
 

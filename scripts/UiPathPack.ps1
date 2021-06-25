@@ -46,7 +46,7 @@
 
 .PARAMETER disableTelemetry
     Disable telemetry data.
-
+    
 .EXAMPLE
 SYNTAX:
     .\UiPathPack.ps1 <project_path> -destination_folder <destination_folder> [-version <version>] [-autoVersion] [--outputType <Process|Library|Tests|Objects>] [--libraryOrchestratorUrl <orchestrator_url> --libraryOrchestratorTenant <orchestrator_tenant>] [--libraryOrchestratorUsername <orchestrator_user> --libraryOrchestratorPassword <orchestrator_pass>] [--libraryOrchestratorUserKey <UserKey> --libraryOrchestratorAccountName <account_name>] [--libraryOrchestratorFolder <folder>] [-language <language>]
@@ -102,9 +102,28 @@ function WriteLog
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $debugLog = "$scriptPath\orchestrator-package-pack.log"
 
-$uipathCLI = "C:\uipathcli\lib\net461\uipcli.exe"
+#Verifying UiPath CLI folder
+$uipathCLI = "$scriptPath\uipathcli\lib\net461\uipcli.exe"
+if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+    WriteLog "UiPath CLI does not exist in this folder. Attempting to download it..."
+    try {
+        New-Item -Path "$scriptPath" -ItemType "directory" -Name "uipathcli";
+        Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7802.11617" -OutFile "$scriptPath\\uipathcli\\cli.zip";
+        Expand-Archive -LiteralPath "$scriptPath\\uipathcli\\cli.zip" -DestinationPath "$scriptPath\\uipathcli";
+        WriteLog "UiPath CLI is downloaded and extracted in folder $scriptPath\\uipathcli"
+        if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+            WriteLog "Unable to locate uipath cli after it is downloaded."
+            exit 1
+        }
+    }
+    catch {
+        WriteLog ("Error Occured : " + $_.Exception.Message) -err $_.Exception
+        exit 1
+    }
+    
+}
 WriteLog "-----------------------------------------------------------------------------"
-WriteLog "uipcli location :  $uipathCLI"
+WriteLog "uipcli location :   $uipathCLI"
 
 $ParamList = New-Object 'Collections.Generic.List[string]'
 

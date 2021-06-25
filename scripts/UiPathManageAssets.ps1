@@ -1,15 +1,21 @@
 <#
 .SYNOPSIS 
-    Test a given package or run a test set
+    Manage uipath orchestrator assets
 
 .DESCRIPTION 
-    Test a given package or run a test set in orchestrator
+    Delete assets from an Orchestrator instance (based on asset name).
+    Deploy assets to an Orchestrator instance.
 
-.PARAMETER project_path 
-     The path to a test package file.
+.PARAMETER $operation 
+    Manage assets operation (delete | deploy) 
 
-.PARAMETER testset 
-     The name of the test set to execute. The test set should use the latest version of the test cases. If the test set does not belong to the default folder (organization unit) it must be prefixed with the folder name, e.g. AccountingTeam\TestSet
+.PARAMETER $assets_file 
+     The following is a sample csv file. The column names are required! Only the first column is used but you need to at least have empty columns in place.
+                                  name,type,value
+                                  asset_1_name,boolean,false # we can have comments
+                                  asset_2_name,integer,
+                                  asset_3_name,text,
+                                  asset_4_name,credential,username::password
 
 .PARAMETER orchestrator_url 
     Required. The URL of the Orchestrator instance.
@@ -17,8 +23,6 @@
 .PARAMETER orchestrator_tenant 
     Required. The tenant of the Orchestrator instance.
 
-.PARAMETER result_path 
-    Results file path
 
 .PARAMETER orchestrator_user
     Required. The Orchestrator username used for authentication. Must be used together with the password.
@@ -35,14 +39,6 @@
 .PARAMETER folder_organization_unit
     The Orchestrator folder (organization unit).
 
-.PARAMETER environment
-    The environment to deploy the package to. Must be used together with the project path. Required when not using a modern folder.
-
-.PARAMETER timeout
-    The time in seconds for waiting to finish test set executions. (default 7200) 
-
-.PARAMETER out
-    Type of result file
 
 .PARAMETER language
     The orchestrator language.
@@ -50,29 +46,29 @@
 .PARAMETER disableTelemetry
     Disable telemetry data.
 
-
 .EXAMPLE
-.\UiPathRunTest.ps1 <orchestrator_url> <orchestrator_tenant> [-project_path <package>] [-testset <testset>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-environment <environment>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
+SYNTAX
+    . 'C:\scripts\UiPathManageAssets.ps1' <operation> <assets_file.csv> <orchestrator_url> <orchestrator_tenant> [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
 
-  Examples:
-    .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -S "MyRobotTests"
-    .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -project_path "C:\UiPath\Project\project.json" -environment TestingEnv
-    .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -project_path "C:\UiPath\Project\project.json" -folder_organization_unit MyFolder
-    .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -project_path "C:\UiPath\Project\project.json" -folder_organization_unit MyFolder -environment MyEnvironment
-    .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -UserKey a7da29a2c93a717110a82 -account_name myAccount -testset "MyRobotTests"
-    .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -UserKey a7da29a2c93a717110a82 -account_name myAccount -project_path "C:\UiPath\Project\project.json" -environment TestingEnv -out junit
-    .\UiPathRunTest.ps1 "https://uipath-orchestrator.myorg.com" default -UserKey a7da29a2c93a717110a82 -account_name myAccount -project_path "C:\UiPath\Project\project.json" -environment TestingEnv -result_path "C:\results.json" -out uipath -language en-US
-#>
+  Examples (Deploy Assets):
+    . 'C:\scripts\UiPathManageAssets.ps1' deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456
+    . 'C:\scripts\UiPathManageAssets.ps1' deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit OurOrganization
+    . 'C:\scripts\UiPathManageAssets.ps1' deploy assets_file.csv "https://cloud.uipath.com" defaultTenant -UserKey a7da29a2c93a717110a82 -account_name myAccount -language en-US
+  
+  Examples (Delete Assets):
+    . 'C:\scripts\UiPathManageAssets.ps1' delete assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456
+    . 'C:\scripts\UiPathManageAssets.ps1' delete assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456 -folder_organization_unit OurOrganization
+    . 'C:\scripts\UiPathManageAssets.ps1' delete assets_file.csv "https://cloud.uipath.com" defaultTenant -UserKey a7da29a2c93a717110a82 -account_name myAccount -language en-US
+
+    #>
 Param (
 
     #Required
+	[string] $operation = "", #Manage assets operation (delete | deploy) 
+	[string] $assets_file = "", #Assets file
+    
     [string] $orchestrator_url = "", #Required. The URL of the Orchestrator instance.
 	[string] $orchestrator_tenant = "", #Required. The tenant of the Orchestrator instance.
-
-	[string] $project_path = "", #The path to a test package file.
-	[string] $testset = "", #The name of the test set to execute. The test set should use the latest version of the test cases. If the test set does not belong to the default folder (organization unit) it must be prefixed with the folder name, e.g. AccountingTeam\TestSet
-
-	[string] $result_path = "", #Results file path
 
     #cloud - Required
     [string] $account_name = "", #Required. The Orchestrator CloudRPA account name. Must be used together with the refresh token and client id.
@@ -84,10 +80,9 @@ Param (
 	
 	[string] $folder_organization_unit = "", #The Orchestrator folder (organization unit).
 	[string] $language = "", #-l, --language                  The orchestrator language.  
-    [string] $environment = "", #The environment to deploy the package to. Must be used together with the project path. Required when not using a modern folder.
     [string] $disableTelemetry = "", #-y, --disableTelemetry          Disable telemetry data.   
-    [string] $timeout = "", # The time in seconds for waiting to finish test set executions. (default 7200) 
-    [string] $out = "" #Type of result file
+    [string] $timeout = "" # The time in seconds for waiting to finish test set executions. (default 7200) 
+
 )
 function WriteLog
 {
@@ -105,6 +100,7 @@ function WriteLog
 }
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $debugLog = "$scriptPath\orchestrator-test-run.log"
+
 
 #Verifying UiPath CLI folder
 $uipathCLI = "$scriptPath\uipathcli\lib\net461\uipcli.exe"
@@ -131,6 +127,21 @@ WriteLog "uipcli location :   $uipathCLI"
 
 $ParamList = New-Object 'Collections.Generic.List[string]'
 
+
+if($operation -ne "delete" -and $operation -ne "deploy"){
+    WriteLog "invalid operation. operation must either be 'delete' or 'deploy'. You typed '$operation'"
+    exit 1
+}
+
+#full path of asset file
+if(-not($assets_file.Contains("\")))
+{
+    $assets_file = "$scriptPath\$assets_file"
+}
+if (-not(Test-Path -Path $assets_file -PathType Leaf)) {
+    WriteLog "asset file does not exist ($assets_file)"
+    exit 1
+}
 if($orchestrator_url -eq "" -or $orchestrator_tenant -eq "") 
 {
     WriteLog "Fill the required paramters"
@@ -154,23 +165,11 @@ if($project_path -eq "" -and $testset -eq "")
     exit 1
 }
 #Building uipath cli paramters
-$ParamList.Add("test")
-$ParamList.Add("run")
+$ParamList.Add("asset")
+$ParamList.Add("$operation")
+$ParamList.Add($assets_file)
 $ParamList.Add($orchestrator_url)
 $ParamList.Add($orchestrator_tenant)
-
-if($project_path -ne ""){
-    $ParamList.Add("-P")
-    $ParamList.Add($project_path)
-}
-if($testset -ne ""){
-    $ParamList.Add("-s")
-    $ParamList.Add($testset)
-}
-if($result_path -ne ""){
-    $ParamList.Add("-r")
-    $ParamList.Add($result_path)
-}
 
 if($account_name -ne ""){
     $ParamList.Add("-a")
@@ -191,18 +190,6 @@ if($orchestrator_pass -ne ""){
 if($folder_organization_unit -ne ""){
     $ParamList.Add("-o")
     $ParamList.Add($folder_organization_unit)
-}
-if($environment -ne ""){
-    $ParamList.Add("-e")
-    $ParamList.Add($environment)
-}
-if($timeout -ne ""){
-    $ParamList.Add("-w")
-    $ParamList.Add($timeout)
-}
-if($out -ne ""){
-    $ParamList.Add("--out")
-    $ParamList.Add($out)
 }
 if($language -ne ""){
     $ParamList.Add("-l")
@@ -238,6 +225,6 @@ if($LASTEXITCODE -eq 0)
     WriteLog "Done!"
     Exit 0
 }else {
-    WriteLog "Unable to run test. Exit code $LASTEXITCODE"
+    WriteLog "Unable to execute command. Exit code $LASTEXITCODE"
     Exit 1
 }
