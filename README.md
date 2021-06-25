@@ -15,6 +15,7 @@ Until a generic solution is officially released, this unofficial library of DevO
 - Add a step in your CI/CD pipepline to download the descired scripts. (Downlod only the scripts you need, for example if you want to Pack an RPA project then download UiPathPack script)
 Use the scripts below as one step in your pipeline and give at any name (e.g. "Preparing Environment")
  ```PowerShell
+
  #Create scripts folder under C drive. (you can change the directory path )
  New-Item -Path "C:\\" -ItemType "directory" -Name "scripts";
  Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathPack.ps1" -OutFile "C:\\scripts\\UiPathPack.ps1";
