@@ -18,11 +18,11 @@ Use the scripts below as one step in your pipeline and give at any name (e.g. "P
 
  #Create scripts folder under C drive. (you can change the directory path )
  New-Item -Path "C:\\" -ItemType "directory" -Name "scripts";
- Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathPack.ps1" -OutFile "C:\\scripts\\UiPathPack.ps1";
- Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathDeploy.ps1" -OutFile "C:\\scripts\\UiPathDeploy.ps1";
- Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathJobRun.ps1" -OutFile "C:\\scripts\\UiPathJobRun.ps1";
- Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathRunTest.ps1" -OutFile "C:\\scripts\\UiPathRunTest.ps1";
- Invoke-WebRequest "https://github.com/SE-Abdullah/UiPath-DevOps-Scripts/raw/main/scripts/UiPathManageAssets.ps1" -OutFile "C:\\scripts\\UiPathManageAssets.ps1";
+ Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathPack.ps1" -OutFile "C:\\scripts\\UiPathPack.ps1";
+ Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathDeploy.ps1" -OutFile "C:\\scripts\\UiPathDeploy.ps1";
+ Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathJobRun.ps1" -OutFile "C:\\scripts\\UiPathJobRun.ps1";
+ Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathRunTest.ps1" -OutFile "C:\\scripts\\UiPathRunTest.ps1";
+ Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathManageAssets.ps1" -OutFile "C:\\scripts\\UiPathManageAssets.ps1";
 ```
 
 
