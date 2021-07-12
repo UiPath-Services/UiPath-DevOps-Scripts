@@ -1,7 +1,10 @@
 
 # UiPath DevOps Scripts 🤖
 
-Package, deploy, run automations, tests & manage assets.
+Package, deploy, run automations, tests & manage assets.  
+[Youtube Video](https://www.youtube.com/watch?v=asdh8XTUQtQ)  
+[![Youtube Video](https://img.youtube.com/vi/asdh8XTUQtQ/0.jpg)](https://www.youtube.com/watch?v=asdh8XTUQtQ)
+
 
 ## Overview
 
