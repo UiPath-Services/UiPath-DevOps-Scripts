@@ -1,0 +1,65 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
+
+jobs:
+  build:
+    working_directory: C:\workingdir\
+    executor:
+      name: win/default
+      shell: powershell.exe
+    steps:
+      - checkout
+      - run:
+          name: "Download PS Scripts"
+          command: |
+            New-Item -Path "C:\\" -ItemType "directory" -Name "scripts";
+            Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathPack.ps1" -OutFile "C:\\scripts\\UiPathPack.ps1";
+            Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathDeploy.ps1" -OutFile "C:\\scripts\\UiPathDeploy.ps1";
+            Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathJobRun.ps1" -OutFile "C:\\scripts\\UiPathJobRun.ps1";
+            Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathRunTest.ps1" -OutFile "C:\\scripts\\UiPathRunTest.ps1";
+            Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathManageAssets.ps1" -OutFile "C:\\scripts\\UiPathManageAssets.ps1";
+      # UiPath Pack
+      - run:
+          name: "UiPath Pack"
+          command: |
+            New-Item -Path "C:\\workingdir\\" -ItemType "directory" -Name "output";
+            . 'C:\scripts\UiPathPack.ps1' "C:\workingdir\project.json" "C:\\workingdir\\output\\" -autoVersion
+      # UiPath Test Run
+      - run:
+          name: "UiPath Run Test cases in the project"
+          command: 
+             . 'C:\scripts\UiPathRunTest.ps1' "http://cloud.uipath.com" AbdullahTenant -userKey $env:uipathUserKey -account_name $env:uipathAccountName -project_path "C:\workingdir\project.json" -result_path "C:\workingdir\output_results\junit_rpa_test_result.xml" -out junit  -folder_organization_unit DevWork
+      - run:
+          name: "UiPath Run Testsets in orchestrator"
+          command: 
+             . 'C:\scripts\UiPathRunTest.ps1' "http://cloud.uipath.com" AbdullahTenant -userKey $env:uipathUserKey -account_name $env:uipathAccountName -testset "CircleCI-TestSet" -result_path "C:\workingdir\output_results\junit_rpa_testset_result.xml" -out junit  -folder_organization_unit DevWork
+      - store_test_results:
+          path: "C:\\workingdir\\output_results"
+      
+      # UiPath Deploy
+      - run:
+          name: "Deploy Project"
+          shell: powershell.exe
+          command: 
+            . 'C:\scripts\UiPathDeploy.ps1' "C:\\workingdir\\output\\" "http://cloud.uipath.com" "AbdullahTenant" -account_name $env:uipathAccountName -userKey $env:uipathUserKey -folder_organization_unit DevWork
+      
+      # UiPath Run process
+      - run:
+          name: "Run Process"
+          shell: powershell.exe
+          command: 
+            . 'C:\scripts\UiPathJobRun.ps1' -processName SimpleRPAFlow -uriOrch https://cloud.uipath.com -tenantlName AbdullahTenant -accountName $env:uipathAccountName -userKey $env:uipathUserKey -folder_organization_unit MyWork-Dev -wait false
+
+      # UiPath Manage Asset
+      - run:
+          name: "Deploy Assets"
+          shell: powershell.exe
+          command: 
+            . 'C:\scripts\UiPathManageAssets.ps1' deploy "C:\workingdir\assets\assets_to_deploy.csv" "https://cloud.uipath.com" AbdullahTenant -UserKey $env:uipathUserKey -account_name $env:uipathAccountName -folder_organization_unit DevWork -language en-US
+      - run:
+          name: "Delete Assets"
+          shell: powershell.exe
+          command: |
+            . 'C:\scripts\UiPathManageAssets.ps1' delete "C:\workingdir\assets\assets_to_delete.csv" "https://cloud.uipath.com" AbdullahTenant -UserKey $env:uipathUserKey -account_name $env:uipathAccountName -folder_organization_unit DevWork -language en-US

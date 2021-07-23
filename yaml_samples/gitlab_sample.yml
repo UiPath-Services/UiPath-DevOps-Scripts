@@ -1,0 +1,73 @@
+stages:
+  - pack
+  - test
+  - deploy
+  
+  # - PreTest
+  # - Build_Package
+  # - Deploy_to_Dev
+  # - UAT_Test
+  # - Deploy_To_Prod
+Pack Project:
+  stage: pack
+  
+  # There is no image: tag because Windows shared runners are shell runners
+  # These tags are only required for targeting shared Windows runners on GitLab.com, remove for self-hosted private runners
+  before_script:
+    - Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathPack.ps1" -OutFile "$env:CI_PROJECT_DIR\UiPathPack.ps1";
+
+  script:
+    - |
+      Write-Host $env:CI_PROJECT_DIR
+      New-Item -Path "$env:CI_PROJECT_DIR\\" -ItemType "directory" -Name "output_packages";
+      . "$env:CI_PROJECT_DIR\UiPathPack.ps1" "$env:CI_PROJECT_DIR\project.json" "$env:CI_PROJECT_DIR\output_packages\"  -autoVersion
+
+  artifacts:
+    paths: [ "$env:CI_PROJECT_DIR\\output_packages\\" ]
+    expire_in: 30 days
+
+Test Package:
+  stage: test
+
+  before_script:
+    - Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathRunTest.ps1" -OutFile "$env:CI_PROJECT_DIR\UiPathRunTest.ps1";
+  
+  script:
+    - . "$env:CI_PROJECT_DIR\UiPathRunTest.ps1" "http://cloud.uipath.com" AbdullahTenant -userKey $env:uipathUserKey -account_name $env:uipathAccountName -project_path "$env:CI_PROJECT_DIR\project.json" -result_path "$env:CI_PROJECT_DIR\junit_package_test_result.xml" -out junit  -folder_organization_unit DevWork
+  artifacts:
+    paths: [ "$env:CI_PROJECT_DIR\\output_results\\" ]
+    reports:
+      junit: junit_package_test_result.xml
+
+Run Testset:
+  stage: test
+
+  before_script:
+    - Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathRunTest.ps1" -OutFile "$env:CI_PROJECT_DIR\UiPathRunTest.ps1";
+  
+  script:
+    - . "$env:CI_PROJECT_DIR\UiPathRunTest.ps1" "http://cloud.uipath.com" AbdullahTenant -userKey $env:uipathUserKey -account_name $env:uipathAccountName -testset "CircleCI-TestSet" -result_path "$env:CI_PROJECT_DIR\output_results\junit_testset_result.xml" -out junit  -folder_organization_unit DevWork
+  artifacts:
+    paths: [ "$env:CI_PROJECT_DIR\\output_results\\" ]
+    reports:
+      junit: junit_testset_result.xml
+
+Deploy Package:
+  stage: deploy
+
+  before_script:
+    - Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathDeploy.ps1" -OutFile "$env:CI_PROJECT_DIR\UiPathDeploy.ps1";
+  
+  script:
+    - . "$env:CI_PROJECT_DIR\UiPathDeploy.ps1" "$env:CI_PROJECT_DIR\\output_packages\\" "http://cloud.uipath.com" "AbdullahTenant" -account_name $env:uipathAccountName -userKey $env:uipathUserKey -folder_organization_unit DevWork
+
+Deploy Assets:
+  stage: deploy
+
+  before_script:
+    - Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathManageAssets.ps1" -OutFile "$env:CI_PROJECT_DIR\UiPathManageAssets.ps1";
+  
+  script:
+    - . "$env:CI_PROJECT_DIR\UiPathManageAssets.ps1" deploy "$env:CI_PROJECT_DIR\assets\assets_to_deploy.csv" "https://cloud.uipath.com" AbdullahTenant -UserKey $env:uipathUserKey -account_name $env:uipathAccountName -folder_organization_unit DevWork -language en-US
+
+

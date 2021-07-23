@@ -58,6 +58,9 @@ Five available scripts can be utilized
 ---
 
 
+### PipleLines Samples provided in the video
+ [CircleCI sample](yaml_samples/circleci_sample.yml)  
+ [GitLab sample](yaml_samples/gitlab_sample.yml)  
 
 ### Logging
 
