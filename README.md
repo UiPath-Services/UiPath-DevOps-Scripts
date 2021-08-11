@@ -67,7 +67,7 @@ Five available scripts can be utilized
 Each script will log all output to its own `*.log` file and sometimes to the console.
 
 ### Dependency
-
+`The scripts will automatically download the dependencies during the runtime`  
 [UiPath CLI](https://www.myget.org/feed/uipath-dev/package/nuget/UiPath.CLI)
 
 * Package Pack
@@ -75,4 +75,5 @@ Each script will log all output to its own `*.log` file and sometimes to the con
 * Job Run
 * Test Run
 * asset delete
-* asset deploy
+* asset deploy  
+
