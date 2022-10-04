@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS 
-    Deploy NuGet package files to orchestrator
+    Check project(s) for workflow analyzer violations
 
 .DESCRIPTION 
     This script is used to analyze UiPath Studio Project for Warrning & Errors.
