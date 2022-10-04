@@ -1,6 +1,5 @@
 # UiPathCLIGeneric
- This script is designed for those who know how to work with uipcli.exe and would like to call the cli directly.
- This script will pass the provided paramters as is directly to Uipcli.exe. 
+ This script is designed for those who know how to work with uipcli.exe and would like to call the cli directly. This script will pass the provided parameters as is directly to Uipcli.exe. 
 ```PowerShell
 SYNTAX
     . 'C:\scripts\UiPathCLIGeneric.ps1' <uipcli desired arguments>

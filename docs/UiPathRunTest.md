@@ -18,6 +18,8 @@ Examples:
 
 #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
+More on different authentication options here [UiPathAuthenticationsOptions](UiPathAuthenticationsOptions.md)
+
 Script Parameters
 - `project_path` 
      The path to a test package file.

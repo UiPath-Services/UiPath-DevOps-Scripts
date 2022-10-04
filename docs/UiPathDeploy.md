@@ -14,6 +14,9 @@ Examples:
 
 #Note: if script path is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
+
+More on different authentication options here [UiPathAuthenticationsOptions](UiPathAuthenticationsOptions.md)
+
 Script Parameters
   -  `packages_path` 
      Required. The path to a folder containing packages, or to a package file.

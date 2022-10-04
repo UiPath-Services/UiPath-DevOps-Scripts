@@ -21,6 +21,8 @@ Example 1:
 
 #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
+More on different authentication options here [UiPathAuthenticationsOptions](UiPathAuthenticationsOptions.md)
+
 Script Parameters
 -  `processName` 
     orchestrator process name to run.
