@@ -1,5 +1,5 @@
 scripts/test.ps1
 scripts/uipathcli/*
+test_scripts/*
 *.csv
 *.log
-
