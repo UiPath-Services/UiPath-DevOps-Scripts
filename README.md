@@ -17,8 +17,9 @@ Until a generic solution is officially released, this unofficial library of DevO
 - The provisioned vm or agent should be a window machine
 - Add a step in your CI/CD pipepline to download the descired scripts. (Downlod only the scripts you need, for example if you want to Pack an RPA project then download UiPathPack script)
 Use the scripts below as one step in your pipeline and give at any name (e.g. "Preparing Environment")
- ```PowerShell
 
+It is recommended to download copy of the scripts from the [scripts folder](scripts) into your own repository 
+ ```PowerShell
  #Create scripts folder under C drive. (you can change the directory path )
  New-Item -Path "C:\\" -ItemType "directory" -Name "scripts";
  Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathPack.ps1" -OutFile "C:\\scripts\\UiPathPack.ps1";
@@ -26,6 +27,8 @@ Use the scripts below as one step in your pipeline and give at any name (e.g. "P
  Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathJobRun.ps1" -OutFile "C:\\scripts\\UiPathJobRun.ps1";
  Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathRunTest.ps1" -OutFile "C:\\scripts\\UiPathRunTest.ps1";
  Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathManageAssets.ps1" -OutFile "C:\\scripts\\UiPathManageAssets.ps1";
+ Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathAnalyzeProject.ps1" -OutFile "C:\\scripts\\UiPathAnalyzeProject.ps1";
+ Invoke-WebRequest "https://github.com/UiPath-Services/UiPath-DevOps-Scripts/raw/main/scripts/UiPathCLIGeneric.ps1" -OutFile "C:\\scripts\\UiPathCLIGeneric.ps1";
 ```
 
 
@@ -54,6 +57,8 @@ Five available scripts can be utilized
 | [UiPathJobRun](docs/UiPathJobRun.md) | Trigger a job on Orchestrator. Click on the name for detailed documentation  |
 | [UiPathRunTest](docs/UiPathRunTest.md) | Tests a given package or runs a test set. Click on the name for detailed documentation  |
 | [UiPathManageAssets](docs/UiPathManageAssets.md) | Manage uipath orchestrator assets.  |
+| [UiPathAnalyzeProject](docs/UiPathAnalyzeProject.md) | Check project(s) for workflow analyzer violations  |
+| [UiPathCLIGeneric](docs/UiPathCLIGeneric.md) | This script is designed for those who know how to work with uipcli.exe and would like to call the cli directly. This script will pass the provided parameters as is directly to uipcli.exe.  |
 
 ---
 
@@ -76,4 +81,4 @@ Each script will log all output to its own `*.log` file and sometimes to the con
 * Test Run
 * asset delete
 * asset deploy  
-
+* package analyze

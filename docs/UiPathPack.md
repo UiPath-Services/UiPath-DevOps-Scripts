@@ -3,17 +3,20 @@
  Pack one or more projects into a package.
 ```PowerShell
 SYNTAX
-    . 'C:\scripts\UiPathPack.ps1' <project_path> -destination_folder <destination_folder> [-version <version>] [-autoVersion] [-outputType <Process|Library|Tests|Objects>] [-libraryOrchestratorUrl <orchestrator_url> -libraryOrchestratorTenant <orchestrator_tenant>] [-libraryOrchestratorUsername <orchestrator_user> --libraryOrchestratorPassword <orchestrator_pass>] [-libraryOrchestratorUserKey <UserKey> -libraryOrchestratorAccountName <account_name>] [-libraryOrchestratorFolder <folder>] [-language <language>]
+    . 'C:\scripts\UiPathPack.ps1' <project_path> -o <destination_folder> [-version <version>] [-autoVersion] [-outputType <Process|Library|Tests|Objects>] [-libraryOrchestratorUrl <orchestrator_url> -libraryOrchestratorTenant <orchestrator_tenant>] [-libraryOrchestratorUsername <orchestrator_user> -libraryOrchestratorPassword <orchestrator_pass>] [-libraryOrchestratorUserKey <auth_token> -libraryOrchestratorAccountName <account_name>] [-libraryOrchestratorAccountForApp <ExternaAppAccount> -libraryOrchestratorApplicationId <AppID> -libraryOrchestratorApplicationSecret <AppSecret> -libraryOrchestratorApplicationScope <AppScope>] 
+    [-libraryOrchestratorFolder <folder>] [-language <language>]
 
 Examples:
-    . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package"
+    . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" --destination_folder "C:\UiPath\Package"
     . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -version 1.0.6820.22047
     . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -autoVersion
     . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project" -destination_folder "C:\UiPath\Package"
     . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -outputType Tests -language en-US
 
-#Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
+#Note: if the script folder location is different, you need to replace "C:" with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
+More on different authentication options here [UiPathAuthenticationsOptions](UiPathAuthenticationsOptions.md)
+
 Script Parameters
 -  `project_path` 
      Required. Path to a project.json file or a folder containing project.json files.
@@ -38,6 +41,18 @@ Script Parameters
 
 -  `libraryOrchestratorAccountName`
     (Optional, useful only for libraries) The Orchestrator CloudRPA account name. Must be used together with the refresh token and client id.
+
+-  `libraryOrchestratorAccountForApp`
+    (Optional, useful only for libraries) The Orchestrator CloudRPA account name. Must be used together with id, secret and scope(s) for external application.
+
+-  `libraryOrchestratorApplicationId`
+    (Optional, useful only for libraries) The external application id. Must be used together with account, secret and scope(s) for external application.
+
+-  `libraryOrchestratorApplicationSecret`
+    (Optional, useful only for libraries) The external application secret. Must be used together with account, id and scope(s) for external application.
+
+-  `libraryOrchestratorApplicationScope`
+    (Optional, useful only for libraries) The space-separated list of application scopes. Must be used together with account, id and secret for external application.
 
 -  `libraryOrchestratorFolder`
     (Optional, useful only for libraries) The Orchestrator folder (organization unit).
