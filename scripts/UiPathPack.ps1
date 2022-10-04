@@ -17,6 +17,18 @@
 .PARAMETER libraryOrchestratorTenant 
     (Optional, useful only for libraries) The Orchestrator tenant.
 
+.PARAMETER libraryOrchestratorAccountForApp 
+    (Optional, useful only for libraries) The Orchestrator CloudRPA account name. Must be used together with id, secret and scope(s) for external application.
+
+.PARAMETER libraryOrchestratorApplicationId 
+    (Optional, useful only for libraries) The external application id. Must be used together with account, secret and scope(s) for external application.
+
+.PARAMETER libraryOrchestratorApplicationSecret 
+    (Optional, useful only for libraries) The external application secret. Must be used together with account, id and scope(s) for external application.
+
+.PARAMETER libraryOrchestratorApplicationScope 
+    (Optional, useful only for libraries) The space-separated list of application scopes. Must be used together with account, id and secret for external application.
+
 .PARAMETER libraryOrchestratorUsername
     (Optional, useful only for libraries) The Orchestrator password used for authentication. Must be used together with the username.
 
@@ -57,6 +69,16 @@ SYNTAX:
     package pack "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -autoVersion
     package pack "C:\UiPath\Project" -destination_folder "C:\UiPath\Package"
     package pack "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" --outputType Tests -language en-US
+
+    .\UiPathPack.ps1 <project_path> -o <destination_folder> [-version <version>] [-autoVersion] [-outputType <Process|Library|Tests|Objects>] [-libraryOrchestratorUrl <orchestrator_url> -libraryOrchestratorTenant <orchestrator_tenant>] [-libraryOrchestratorUsername <orchestrator_user> -libraryOrchestratorPassword <orchestrator_pass>] [-libraryOrchestratorUserKey <auth_token> -libraryOrchestratorAccountName <account_name>] [-libraryOrchestratorAccountForApp <ExternaAppAccount> -libraryOrchestratorApplicationId <AppID> -libraryOrchestratorApplicationSecret <AppSecret> -libraryOrchestratorApplicationScope <AppScope>] 
+    [-libraryOrchestratorFolder <folder>] [-language <language>]
+
+  Examples:
+    .\UiPathPack.ps1 "C:\UiPath\Project\project.json" --destination_folder "C:\UiPath\Package"
+    .\UiPathPack.ps1 "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -version 1.0.6820.22047
+    .\UiPathPack.ps1 "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -autoVersion
+    .\UiPathPack.ps1 "C:\UiPath\Project" -destination_folder "C:\UiPath\Package"
+    .\UiPathPack.ps1 "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -outputType Tests -language en-US
 #>
 Param (
 
@@ -67,13 +89,19 @@ Param (
 	[string] $libraryOrchestratorUrl = "", #Required. The URL of the Orchestrator instance.
 	[string] $libraryOrchestratorTenant = "", #(Optional, useful only for libraries) The Orchestrator tenant.
 
-    #cloud - Required
+    #Extranal Apps (OAuth) (Cloud/OnPrem)
+    [string] $libraryOrchestratorAccountForApp = "", #(Optional, useful only for libraries) The Orchestrator CloudRPA account name. Must be used together with id, secret and scope(s) for external application.
+    [string] $libraryOrchestratorApplicationId = "", #(Optional, useful only for libraries) The external application id. Must be used together with account, secret and scope(s) for external application.
+    [string] $libraryOrchestratorApplicationSecret = "", #(Optional, useful only for libraries) The external application secret. Must be used together with account, id and scope(s) for external application.
+    [string] $libraryOrchestratorApplicationScope = "", #(Optional, useful only for libraries) The space-separated list of application scopes. Must be used together with account, id and secret for external application.
+    
+    #cloud API Access - Required
     [string] $libraryOrchestratorAccountName = "", #(Optional, useful only for libraries) The Orchestrator URL.
 	[string] $libraryOrchestratorUserKey = "", #Required. The Orchestrator OAuth2 refresh token used for authentication. Must be used together with the account name and client id.
     
     #On prem - Required
-    [string] $libraryOrchestratorUsername = "", #Required. The Orchestrator username used for authentication. Must be used together with the password.
-	[string] $libraryOrchestratorPassword = "", #Required. The Orchestrator password used for authentication. Must be used together with the username.
+    [string] $libraryOrchestratorUsername = "", #Required. The Orchestrator username used for authentication. Must be used together with the libraryOrchestratorPassword.
+	[string] $libraryOrchestratorPassword = "", #Required. The Orchestrator password used for authentication. Must be used together with the libraryOrchestratorUsername.
 	
 	[string] $libraryOrchestratorFolder = "", #Optional, useful only for libraries) The Orchestrator folder (organization unit).
 	[string] $language = "", #The orchestrator language.  
@@ -85,6 +113,7 @@ Param (
     
 
 )
+#Log function
 function WriteLog
 {
 	Param ($message, [switch] $err)
@@ -99,18 +128,25 @@ function WriteLog
 		Write-Host $line
 	}
 }
+#Running Path
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
+#log file
 $debugLog = "$scriptPath\orchestrator-package-pack.log"
 
-#Verifying UiPath CLI folder
-$uipathCLI = "$scriptPath\uipathcli\lib\net461\uipcli.exe"
+#Verifying UiPath CLI installation
+$cliVersion = "1.0.7985.19721"; #CLI Version (Script was tested on this latest version at the time)
+
+$uipathCLI = "$scriptPath\uipathcli\$cliVersion\lib\net461\uipcli.exe"
 if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
     WriteLog "UiPath CLI does not exist in this folder. Attempting to download it..."
     try {
-        New-Item -Path "$scriptPath" -ItemType "directory" -Name "uipathcli";
-        Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/1.0.7802.11617" -OutFile "$scriptPath\\uipathcli\\cli.zip";
-        Expand-Archive -LiteralPath "$scriptPath\\uipathcli\\cli.zip" -DestinationPath "$scriptPath\\uipathcli";
-        WriteLog "UiPath CLI is downloaded and extracted in folder $scriptPath\\uipathcli"
+        if (-not(Test-Path -Path "$scriptPath\uipathcli\$cliVersion" -PathType Leaf)){
+            New-Item -Path "$scriptPath\uipathcli\$cliVersion" -ItemType "directory" -Force | Out-Null
+        }
+        #Download UiPath CLI
+        Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/$cliVersion" -OutFile "$scriptPath\\uipathcli\\$cliVersion\\cli.zip";
+        Expand-Archive -LiteralPath "$scriptPath\\uipathcli\\$cliVersion\\cli.zip" -DestinationPath "$scriptPath\\uipathcli\\$cliVersion";
+        WriteLog "UiPath CLI is downloaded and extracted in folder $scriptPath\uipathcli\\$cliVersion"
         if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
             WriteLog "Unable to locate uipath cli after it is downloaded."
             exit 1
@@ -124,22 +160,22 @@ if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
 }
 WriteLog "-----------------------------------------------------------------------------"
 WriteLog "uipcli location :   $uipathCLI"
-
-$ParamList = New-Object 'Collections.Generic.List[string]'
-
-if($project_path -eq "" -or $destination_folder -eq "")
-{
-    WriteLog "Fill the required paramters"
-    exit 1
-}
+#END Verifying UiPath CLI installation
 
 
 
 #Building uipath cli paramters
+$ParamList = New-Object 'Collections.Generic.List[string]'
+
+if($project_path -eq "" -or $destination_folder -eq "")
+{
+    WriteLog "Fill the required paramters (project_path, destination_folder)"
+    exit 1
+}
 $ParamList.Add("package")
 $ParamList.Add("pack")
 $ParamList.Add($project_path)
-$ParamList.Add("-o")
+$ParamList.Add("--output")
 $ParamList.Add($destination_folder)
 
 if($libraryOrchestratorUrl -ne ""){
@@ -166,16 +202,32 @@ if($libraryOrchestratorPassword -ne ""){
     $ParamList.Add("--libraryOrchestratorPassword")
     $ParamList.Add($libraryOrchestratorPassword)
 }
+if($libraryOrchestratorAccountForApp -ne ""){
+    $ParamList.Add("--libraryOrchestratorAccountForApp")
+    $ParamList.Add($libraryOrchestratorAccountForApp)
+}
+if($libraryOrchestratorApplicationId -ne ""){
+    $ParamList.Add("--libraryOrchestratorApplicationId")
+    $ParamList.Add($libraryOrchestratorApplicationId)
+}
+if($libraryOrchestratorApplicationSecret -ne ""){
+    $ParamList.Add("--libraryOrchestratorApplicationSecret")
+    $ParamList.Add($libraryOrchestratorApplicationSecret)
+}
+if($libraryOrchestratorApplicationScope -ne ""){
+    $ParamList.Add("--libraryOrchestratorApplicationScope")
+    $ParamList.Add($libraryOrchestratorApplicationScope)
+}
 if($libraryOrchestratorFolder -ne ""){
     $ParamList.Add("--libraryOrchestratorFolder")
     $ParamList.Add($libraryOrchestratorFolder)
 }
 if($language -ne ""){
-    $ParamList.Add("-l")
+    $ParamList.Add("--language")
     $ParamList.Add($language)
 }
 if($version -ne ""){
-    $ParamList.Add("-v")
+    $ParamList.Add("--version")
     $ParamList.Add($version)
 }
 if($PSBoundParameters.ContainsKey('autoVersion')) {
@@ -187,26 +239,35 @@ if($outputType -ne ""){
 }
 
 if($disableTelemetry -ne ""){
-    $ParamList.Add("-y")
+    $ParamList.Add("--disableTelemetry")
     $ParamList.Add($disableTelemetry)
 }
 
 
-#mask sensitive info before logging 
+#region Mask sensitive info before logging 
 $ParamMask = New-Object 'Collections.Generic.List[string]'
 $ParamMask.AddRange($ParamList)
 $secretIndex = $ParamMask.IndexOf("--libraryOrchestratorPassword");
 if($secretIndex -ge 0){
-    $ParamMask[$secretIndex + 1] = ("*" * ($libraryOrchestratorPassword.Length))
+    $ParamMask[$secretIndex + 1] = ("*" * 15)
 }
 $secretIndex = $ParamMask.IndexOf("--libraryOrchestratorAuthToken");
 if($secretIndex -ge 0){
-    $ParamMask[$secretIndex + 1] = $userKey.Substring(0, 4) + ("*" * ($userKey.Length - 4))
+    $ParamMask[$secretIndex + 1] = $libraryOrchestratorUserKey.Substring(0, [Math]::Min(4, $libraryOrchestratorUserKey.Length)) + ("*" * 15)
 }
+$secretIndex = $ParamMask.IndexOf("--libraryOrchestratorApplicationId");
+if($secretIndex -ge 0){
+    $ParamMask[$secretIndex + 1] = $libraryOrchestratorApplicationId.Substring(0, [Math]::Min($libraryOrchestratorApplicationId.Length, 4)) + ("*" * 15)
+}
+$secretIndex = $ParamMask.IndexOf("--libraryOrchestratorApplicationSecret");
+if($secretIndex -ge 0){
+    $ParamMask[$secretIndex + 1] = ("*" * 15)
+}
+#endregion  Mask sensitive info before logging 
 
 #log cli call with parameters
 WriteLog "Executing $uipathCLI $ParamMask"
-
+WriteLog "-----------------------------------------------------------------------------"
 #call uipath cli 
 & "$uipathCLI" $ParamList.ToArray()
 
