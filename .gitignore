@@ -3,3 +3,4 @@ scripts/uipathcli/*
 test_scripts/*
 *.csv
 *.log
+.vscode/*
