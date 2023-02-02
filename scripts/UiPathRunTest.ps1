@@ -257,7 +257,7 @@ if($out -ne ""){
     $ParamList.Add($out)
 }
 if($language -ne ""){
-    $ParamList.Add("-language")
+    $ParamList.Add("--language")
     $ParamList.Add($language)
 }
 if($traceLevel -ne ""){
