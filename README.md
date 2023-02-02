@@ -15,7 +15,7 @@ Until a generic solution is officially released, this unofficial library of DevO
 ## Prerequisite:
 
 - The provisioned vm or agent should be a window machine
-- Add a step in your CI/CD pipepline to download the descired scripts. (Downlod only the scripts you need, for example if you want to Pack an RPA project then download UiPathPack script)
+- Add a step in your CI/CD pipepline to download the descired scripts. (Download only the scripts you need, for example if you want to Pack an RPA project then download UiPathPack script)
 Use the scripts below as one step in your pipeline and give at any name (e.g. "Preparing Environment")
 
 It is recommended to download copy of the scripts from the [scripts folder](scripts) into your own repository 
