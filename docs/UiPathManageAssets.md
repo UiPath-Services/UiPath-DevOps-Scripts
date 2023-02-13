@@ -5,7 +5,7 @@ Manage uipath orchestrator assets.
     - Deploy assets to an Orchestrator instance.
 ```PowerShell
 SYNTAX
-    . 'C:\scripts\UiPathManageAssets.ps1' <operation> <assets_file.csv> <orchestrator_url> <orchestrator_tenant> [-accountForApp <account_for_app> -applicationId <application_id> -applicationSecret <application_secret> -applicationScope <applicationScope>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
+    . 'C:\scripts\UiPathManageAssets.ps1' <operation> <assets_file.csv> <orchestrator_url> <orchestrator_tenant> [-accountForApp <account_for_app> -applicationId <application_id> -applicationSecret <application_secret> -applicationScope <applicationScope>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-language <language>] [-uipathCliFilePath <uipcli_path>]
 
   Examples (Deploy Assets):
     . 'C:\scripts\UiPathManageAssets.ps1' deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456
@@ -22,6 +22,12 @@ SYNTAX
 
 #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
+if running on self-hosted agent and UiPath CLI is available on the agent machine, provide `-uipathCliFilePath` 
+```PowerShell
+Examples:
+    . 'C:\scripts\UiPathManageAssets.ps1' deploy assets_file.csv "https://uipath-orchestrator.myorg.com" defaultTenant -orchestrator_user admin -orchestrator_pass 123456 -uipathCliFilePath "C:\uipathcli\uipcli.exe"
+```
+
 More on different authentication options here [UiPathAuthenticationsOptions](UiPathAuthenticationsOptions.md)
 
 Script Parameters
@@ -75,3 +81,6 @@ Script Parameters
 
 -  `disableTelemetry`
     Disable telemetry data.
+
+-  `uipathCliFilePath`
+    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 22.10.8438.32859
