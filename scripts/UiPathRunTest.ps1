@@ -113,7 +113,7 @@ Param (
     [string] $timeout = "", # The time in seconds for waiting to finish test set executions. (default 7200) 
     [string] $out = "", #Type of result file
     [string] $traceLevel = "", 
-    [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8432.18709. if provided, it is recommended to have cli version 22.10.8432.18709 
+    [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8438.32859.
 
 )
 function WriteLog
