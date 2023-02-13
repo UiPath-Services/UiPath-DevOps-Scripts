@@ -1,0 +1,604 @@
+{
+  "Version": 2,
+  "Rules": [
+    {
+      "RuleId": "ST-NMG-001",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "Regex",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-NMG-008",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "Length",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-NMG-009",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-003",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-020",
+      "IsEnabled": null,
+      "DefaultIsEnabled": false,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "Excluded",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-MRD-002",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-USG-005",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "IncludeActivities",
+          "Value": null
+        },
+        {
+          "Name": "ExcludeActivities",
+          "Value": null
+        },
+        {
+          "Name": "IncludeProperties",
+          "Value": null
+        },
+        {
+          "Name": "ExcludeProperties",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-REL-006",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-MRD-017",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "SY-USG-013",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-NMG-004",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "Threshold",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-NMG-005",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-NMG-002",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "InRegex",
+          "Value": null
+        },
+        {
+          "Name": "OutRegex",
+          "Value": null
+        },
+        {
+          "Name": "InOutRegex",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-NMG-011",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-NMG-012",
+      "IsEnabled": null,
+      "DefaultIsEnabled": false,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-NMG-006",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-NMG-016",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "Length",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-002",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [
+        {
+          "Name": "ArgumentsCount",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-007",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "LayersCount",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-023",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-025",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-028",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-024",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-026",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-MRD-007",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "Threshold",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-MRD-004",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-MRD-008",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-MRD-005",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-MRD-011",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-MRD-009",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "Threshold",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-USG-009",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-USG-026",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "ProhibitedActivities",
+          "Value": null
+        },
+        {
+          "Name": "AllowedActivities",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-USG-028",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-PRR-004",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-SEC-009",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [
+        {
+          "Name": "Excluded",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-SEC-007",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-SEC-008",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [
+        {
+          "Name": "VariableDepthUsage",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "TA-NMG-001",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "TA-DBP-001",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "VerificationsMinCount",
+          "Value": null
+        },
+        {
+          "Name": "VerificationsMaxCount",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "TA-NMG-002",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "RegEx",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "TA-DBP-005",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "TA-DBP-006",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "ActivitiesMaxCount",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "TA-DBP-007",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [
+        {
+          "Name": "BranchesMaxCount",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-USG-020",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-DBP-027",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "SY-USG-014",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": "Error"
+    },
+    {
+      "RuleId": "ST-USG-010",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "TA-DBP-002",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Info",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "TA-DBP-004",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-USG-014",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [
+        {
+          "Name": "ProhibitedPackages",
+          "Value": null
+        },
+        {
+          "Name": "AllowedPackages",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-USG-027",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [
+        {
+          "Name": "RequiredPackages",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-USG-032",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [
+        {
+          "Name": "RequiredTags",
+          "Value": null
+        }
+      ],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-USG-034",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Warning",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-ANA-005",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "ST-ANA-006",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Error",
+      "Parameters": [],
+      "ErrorLevel": null
+    },
+    {
+      "RuleId": "TA-DBP-003",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "DefaultErrorLevel": "Info",
+      "Parameters": [],
+      "ErrorLevel": null
+    }
+  ],
+  "Counters": [
+    {
+      "CounterId": "ST-ANA-009",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "Parameters": []
+    },
+    {
+      "CounterId": "ST-ANA-003",
+      "IsEnabled": null,
+      "DefaultIsEnabled": true,
+      "Parameters": []
+    }
+  ]
+}

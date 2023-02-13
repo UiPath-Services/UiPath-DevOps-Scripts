@@ -5,12 +5,12 @@
 .DESCRIPTION 
     call uipcli.exe with cli paramters
     
-.PARAMETER uipathCliFilePath
-    if not provided, the script will auto download the cli from uipath public feed.
+# .PARAMETER uipathCliFilePath
+#     if not provided, the script will auto download the cli from uipath public feed.
 #>
-Param (
-    [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed.
-)
+# Param (
+#     [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed.
+# )
 function WriteLog
 {
 	Param ($message, [switch] $err)
@@ -30,6 +30,8 @@ function WriteLog
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 #log file
 $debugLog = "$scriptPath\orchestrator-direct-cli-call.log"
+
+$uipathCliFilePath = "" #provide uipcli.exe if running on self-hosted agent and uipath cli is available on the machine 
 #Validate provided cli folder (if any)
 if($uipathCliFilePath -ne ""){
     $uipathCLI = "$uipathCliFilePath"
@@ -71,13 +73,12 @@ WriteLog "uipcli location :   $uipathCLI"
 
 $GenericParamList = New-Object 'Collections.Generic.List[string]'
 for ( $i = 0; $i -lt $args.count; $i++ ) {
-    write-host "Argument  $i is $($args[$i])"
+    #write-host "Argument  $i is $($args[$i])"
     if($args[$i].StartsWith("-")){
         $GenericParamList.Add($args[$i])
     }
     else {
         $GenericParamList.Add("`"$($args[$i])`"")
-        
     }
     
 } 
