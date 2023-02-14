@@ -4,7 +4,7 @@ Trigger a job on Orchestrator
 ```PowerShell
 SYNTAX
     . 'C:\scripts\UiPathJobRun.ps1' <process_name> <orchestrator_url> <orchestrator_tenant> [-input_path <input_path>] [-jobscount <jobscount>] [-result_path <result_path>] [-priority <priority>] [-robots <robots>] 
-    [-fail_when_job_fails <do_not_fail_when_job_fails>] [-timeout <timeout>] [-wait <do_not_wait>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-userKey <auth_token> -accountName <account_name>] [-accountForApp <account_for_app> -applicationId <application_id> -applicationSecret <application_secret> -applicationScope <applicationScope>] [-folder_organization_unit <folder_organization_unit>] [-language <language>] [-user <robotUser>] [-machine <robotMachine>] [-job_type <Unattended, NonProduction>]
+    [-fail_when_job_fails <do_not_fail_when_job_fails>] [-timeout <timeout>] [-wait <do_not_wait>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-userKey <auth_token> -accountName <account_name>] [-accountForApp <account_for_app> -applicationId <application_id> -applicationSecret <application_secret> -applicationScope <applicationScope>] [-folder_organization_unit <folder_organization_unit>] [-language <language>] [-user <robotUser>] [-machine <robotMachine>] [-job_type <Unattended, NonProduction>] [-uipathCliFilePath <uipcli_path>]
 
 Example 1:
 
@@ -21,6 +21,12 @@ Example 1:
 
 #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
+if running on self-hosted agent and UiPath CLI is available on the agent machine, provide `-uipathCliFilePath` 
+```PowerShell
+Examples:
+    . 'C:\scripts\UiPathJobRun.ps1' "ProcessName" "https://uipath-orchestrator.myorg.com" default -orchestrator_user admin -orchestrator_pass 123456 -uipathCliFilePath "C:\uipathcli\uipcli.exe"
+```
+
 More on different authentication options here [UiPathAuthenticationsOptions](UiPathAuthenticationsOptions.md)
 
 Script Parameters
@@ -101,3 +107,6 @@ Script Parameters
 
 -  `disableTelemetry`
     Disable telemetry data.
+
+-  `uipathCliFilePath`
+    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 22.10.8438.32859

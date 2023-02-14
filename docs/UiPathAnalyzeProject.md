@@ -3,7 +3,7 @@
  Check project(s) for workflow analyzer violations
 ```PowerShell
 SYNTAX
-    . 'C:\scripts\UiPathAnalyzeProject.ps1' <project_path> [-analyzerTraceLevel <analyzer_trace_level>] [-stopOnRuleViolation <true|false>] [-treatWarningsAsErrors <true|false>] [-saveOutputToFile] [-ignoredRules <activity_1_id,activity_2_id,activity_3_id,activity_4_id>] [-orchestratorUrl <orchestrator_url> -orchestratorTenant <orchestrator_tenant>] [-orchestratorUsername <orchestrator_user> -orchestratorPassword <orchestrator_pass>] [-orchestratorAuthToken <auth_token> -orchestratorAccountName <account_name>] [-orchestratorFolder <folder>]
+    . 'C:\scripts\UiPathAnalyzeProject.ps1' <project_path> [-analyzerTraceLevel <analyzer_trace_level>] [-stopOnRuleViolation <true|false>] [-treatWarningsAsErrors <true|false>] [-saveOutputToFile] [-ignoredRules <activity_1_id,activity_2_id,activity_3_id,activity_4_id>] [-orchestratorUrl <orchestrator_url> -orchestratorTenant <orchestrator_tenant>] [-orchestratorUsername <orchestrator_user> -orchestratorPassword <orchestrator_pass>] [-orchestratorAuthToken <auth_token> -orchestratorAccountName <account_name>] [-orchestratorFolder <folder>] [-uipathCliFilePath <uipcli_path>]
 
 Examples:
     . 'C:\scripts\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json"
@@ -16,6 +16,11 @@ Examples:
     
 
 #Note: if the script folder location is different, you need to replace "C:" with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
+```
+if running on self-hosted agent and UiPath CLI is available on the agent machine, provide `-uipathCliFilePath` 
+```PowerShell
+Examples:
+    . 'C:\scripts\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json" -analyzerTraceLevel "Error" -uipathCliFilePath "C:\uipathcli\uipcli.exe"
 ```
 
 More on different authentication options here [UiPathAuthenticationsOptions](UiPathAuthenticationsOptions.md)
@@ -71,3 +76,6 @@ Script Parameters
 
 -  `orchestratorTenant`
     (Optional, useful only for additional package feeds) The Orchestrator tenant.
+
+-  `uipathCliFilePath`
+    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 22.10.8438.32859

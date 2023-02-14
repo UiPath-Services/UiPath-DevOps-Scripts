@@ -4,16 +4,21 @@
 ```PowerShell
 SYNTAX
     . 'C:\scripts\UiPathPack.ps1' <project_path> -o <destination_folder> [-version <version>] [-autoVersion] [-outputType <Process|Library|Tests|Objects>] [-libraryOrchestratorUrl <orchestrator_url> -libraryOrchestratorTenant <orchestrator_tenant>] [-libraryOrchestratorUsername <orchestrator_user> -libraryOrchestratorPassword <orchestrator_pass>] [-libraryOrchestratorUserKey <auth_token> -libraryOrchestratorAccountName <account_name>] [-libraryOrchestratorAccountForApp <ExternaAppAccount> -libraryOrchestratorApplicationId <AppID> -libraryOrchestratorApplicationSecret <AppSecret> -libraryOrchestratorApplicationScope <AppScope>] 
-    [-libraryOrchestratorFolder <folder>] [-language <language>]
+    [-libraryOrchestratorFolder <folder>] [-language <language>] [-uipathCliFilePath <uipcli_path>]
 
 Examples:
-    . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" --destination_folder "C:\UiPath\Package"
+    . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package"
     . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -version 1.0.6820.22047
     . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -autoVersion
     . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project" -destination_folder "C:\UiPath\Package"
     . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -outputType Tests -language en-US
 
 #Note: if the script folder location is different, you need to replace "C:" with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
+```
+if running on self-hosted agent and UiPath CLI is available on the agent machine, provide `-uipathCliFilePath` 
+```PowerShell
+Examples:
+    . 'C:\scripts\UiPathPack.ps1' "C:\UiPath\Project\project.json" -destination_folder "C:\UiPath\Package" -uipathCliFilePath "C:\uipathcli\uipcli.exe"
 ```
 More on different authentication options here [UiPathAuthenticationsOptions](UiPathAuthenticationsOptions.md)
 
@@ -71,3 +76,6 @@ Script Parameters
 
 -  `disableTelemetry`
     Disable telemetry data.
+
+-  `uipathCliFilePath`
+    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 22.10.8438.32859

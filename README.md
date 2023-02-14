@@ -1,4 +1,8 @@
 
+## Release Notes
+### Released Date 13/02/2023
+- Upgraded the scripts to use the official [UiPath CLI](https://docs.uipath.com/test-suite/docs/uipath-command-line-interface)  
+- for self-hosted agents, add paramter to provide path of the UiPath CLI if available on the machine instead of auto downloading the scrip 
 # UiPath DevOps Scripts 🤖
 
 Package, deploy, run automations, tests & manage assets.  
@@ -10,7 +14,7 @@ Package, deploy, run automations, tests & manage assets.
 
 More and more customers are requesting integrations of uipath platform to other platforms like GitLab and Circle CI and UiPath is not able to create native plugins for all of them.
 
-Until a generic solution is officially released, this unofficial library of DevOps PowerShell scripts will support customers to integrate CI/CD into their workflows and allow them to package, deploy and run automations and tests.
+This library of DevOps PowerShell scripts will support customers to facilitate the interaction with the offical UiPath CLI to integrate CI/CD into their workflows and allow them to package, deploy and run automations and tests.
 
 ## Prerequisite:
 
@@ -73,7 +77,7 @@ Each script will log all output to its own `*.log` file and sometimes to the con
 
 ### Dependency
 `The scripts will automatically download the dependencies during the runtime`  
-[UiPath CLI](https://www.myget.org/feed/uipath-dev/package/nuget/UiPath.CLI)
+[Official UiPath CLI](https://uipath.visualstudio.com/Public.Feeds/_artifacts/feed/UiPath-Official/NuGet/UiPath.CLI.Windows/overview/22.10.8438.32859)
 
 * Package Pack
 * Package Deploy

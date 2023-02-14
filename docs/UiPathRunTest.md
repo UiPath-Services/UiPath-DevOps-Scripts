@@ -3,7 +3,7 @@
 Tests a given package or runs a test set.
 ```PowerShell
 SYNTAX
-    . 'C:\scripts\UiPathRunTest.ps1' <orchestrator_url> <orchestrator_tenant> [-input_path <input_path>] [-project_path <package>] [-testset <testset>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-accountForApp <account_for_app> -applicationId <application_id> -applicationSecret <application_secret> -applicationScope <applicationScope>] [-environment <environment>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
+    . 'C:\scripts\UiPathRunTest.ps1' <orchestrator_url> <orchestrator_tenant> [-input_path <input_path>] [-project_path <package>] [-testset <testset>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-accountForApp <account_for_app> -applicationId <application_id> -applicationSecret <application_secret> -applicationScope <applicationScope>] [-environment <environment>] [-folder_organization_unit <folder_organization_unit>] [-language <language>] [-uipathCliFilePath <uipcli_path>]
 
 Examples:
     . 'C:\scripts\UiPathRunTest.ps1' -orchestrator_url "https://uipath-orchestrator.myorg.com" -orchestrator_tenant default -orchestrator_user admin -orchestrator_pass 123456 -testset "MyRobotTests"
@@ -17,6 +17,11 @@ Examples:
     . 'C:\scripts\UiPathRunTest.ps1' -orchestrator_url "https://uipath-orchestrator.myorg.com" -orchestrator_tenant default -UserKey a7da29a2c93a717110a82 -account_name myAccount -project_path "C:\UiPath\Project\project.json" -environment TestingEnv -result_path "C:\results.json" -input_path "C:\UiPath\Project\input-params.json" -out uipath -language en-US
 
 #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
+```
+if running on self-hosted agent and UiPath CLI is available on the agent machine, provide `-uipathCliFilePath` 
+```PowerShell
+Examples:
+    . 'C:\scripts\UiPathRunTest.ps1' -orchestrator_url "https://uipath-orchestrator.myorg.com" -orchestrator_tenant default -orchestrator_user admin -orchestrator_pass 123456 -testset "MyRobotTests" -uipathCliFilePath "C:\uipathcli\uipcli.exe"
 ```
 More on different authentication options here [UiPathAuthenticationsOptions](UiPathAuthenticationsOptions.md)
 
@@ -77,3 +82,6 @@ Script Parameters
 
 - `disableTelemetry`
     Disable telemetry data.
+
+-  `uipathCliFilePath`
+    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 22.10.8438.32859

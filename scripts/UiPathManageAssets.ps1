@@ -56,6 +56,9 @@
 .PARAMETER disableTelemetry
     Disable telemetry data.
 
+.PARAMETER uipathCliFilePath
+    if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8432.18709. if provided, it is recommended to have cli version 22.10.8432.18709 
+
 .EXAMPLE
 SYNTAX
     . 'C:\scripts\UiPathManageAssets.ps1' <operation> <assets_file.csv> <orchestrator_url> <orchestrator_tenant> [-accountForApp <account_for_app> -applicationId <application_id> -applicationSecret <application_secret> -applicationScope <applicationScope>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
@@ -99,7 +102,8 @@ SYNTAX
         [string] $folder_organization_unit = "", #The Orchestrator folder (organization unit).
         [string] $language = "", #-l, --language                  The orchestrator language.  
         [string] $disableTelemetry = "", #-y, --disableTelemetry          Disable telemetry data.   
-        [string] $timeout = "" # The time in seconds for waiting to finish test set executions. (default 7200) 
+        [string] $timeout = "", # The time in seconds for waiting to finish test set executions. (default 7200) 
+        [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8438.32859
     
     )
     
@@ -122,30 +126,40 @@ SYNTAX
     #log file
     $debugLog = "$scriptPath\orchestrator-test-run.log"
     
-    #region Verifying UiPath CLI installation
-    $cliVersion = "1.0.7985.19721"; #CLI Version (Script was tested on this latest version at the time)
-    
-    $uipathCLI = "$scriptPath\uipathcli\$cliVersion\lib\net461\uipcli.exe"
-    if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
-        WriteLog "UiPath CLI does not exist in this folder. Attempting to download it..."
-        try {
-            if (-not(Test-Path -Path "$scriptPath\uipathcli\$cliVersion" -PathType Leaf)){
-                New-Item -Path "$scriptPath\uipathcli\$cliVersion" -ItemType "directory" -Force | Out-Null
-            }
-            #Download UiPath CLI
-            Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/$cliVersion" -OutFile "$scriptPath\\uipathcli\\$cliVersion\\cli.zip";
-            Expand-Archive -LiteralPath "$scriptPath\\uipathcli\\$cliVersion\\cli.zip" -DestinationPath "$scriptPath\\uipathcli\\$cliVersion";
-            WriteLog "UiPath CLI is downloaded and extracted in folder $scriptPath\uipathcli\\$cliVersion"
-            if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
-                WriteLog "Unable to locate uipath cli after it is downloaded."
-                exit 1
-            }
-        }
-        catch {
-            WriteLog ("Error Occured : " + $_.Exception.Message) -err $_.Exception
+    #Validate provided cli folder (if any)
+    if($uipathCliFilePath -ne ""){
+        $uipathCLI = "$uipathCliFilePath"
+        if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+            WriteLog "UiPath cli file path provided does not exist in the provided path $uipathCliFilePath.`r`nDo not provide uipathCliFilePath paramter if you want the script to auto download the cli from UiPath Public feed"
             exit 1
         }
-        
+    }else{
+        #Verifying UiPath CLI installation
+        $cliVersion = "22.10.8438.32859"; #CLI Version (Script was tested on this latest version at the time)
+
+        $uipathCLI = "$scriptPath\uipathcli\$cliVersion\tools\uipcli.exe"
+        if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+            WriteLog "UiPath CLI does not exist in this folder. Attempting to download it..."
+            try {
+                if (-not(Test-Path -Path "$scriptPath\uipathcli\$cliVersion" -PathType Leaf)){
+                    New-Item -Path "$scriptPath\uipathcli\$cliVersion" -ItemType "directory" -Force | Out-Null
+                }
+                #Download UiPath CLI
+                #Invoke-WebRequest "https://www.myget.org/F/uipath-dev/api/v2/package/UiPath.CLI/$cliVersion" -OutFile "$scriptPath\\uipathcli\\$cliVersion\\cli.zip";
+                Invoke-WebRequest "https://uipath.pkgs.visualstudio.com/Public.Feeds/_apis/packaging/feeds/1c781268-d43d-45ab-9dfc-0151a1c740b7/nuget/packages/UiPath.CLI.Windows/versions/$cliVersion/content" -OutFile "$scriptPath\\uipathcli\\$cliVersion\\cli.zip";
+                Expand-Archive -LiteralPath "$scriptPath\\uipathcli\\$cliVersion\\cli.zip" -DestinationPath "$scriptPath\\uipathcli\\$cliVersion";
+                WriteLog "UiPath CLI is downloaded and extracted in folder $scriptPath\uipathcli\\$cliVersion"
+                if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
+                    WriteLog "Unable to locate uipath cli after it is downloaded."
+                    exit 1
+                }
+            }
+            catch {
+                WriteLog ("Error Occured : " + $_.Exception.Message) -err $_.Exception
+                exit 1
+            }
+            
+        }
     }
     WriteLog "-----------------------------------------------------------------------------"
     WriteLog "uipcli location :   $uipathCLI"
