@@ -76,13 +76,6 @@ Five available scripts can be utilized
 Each script will log all output to its own `*.log` file and sometimes to the console.
 
 ### Dependency
-`The scripts will automatically download the dependencies during the runtime`  
-[Official UiPath CLI](https://uipath.visualstudio.com/Public.Feeds/_artifacts/feed/UiPath-Official/NuGet/UiPath.CLI.Windows/overview/22.10.8438.32859)
-
-* Package Pack
-* Package Deploy
-* Job Run
-* Test Run
-* asset delete
-* asset deploy  
-* package analyze
+`The scripts will automatically download the UiPath.CLI during the runtime.`  
+- [Official UiPath CLI](https://uipath.visualstudio.com/Public.Feeds/_artifacts/feed/UiPath-Official/NuGet/UiPath.CLI.Windows/overview/22.10.8438.32859)
+- UiPath CLI prerequesites: [.NET 6.0.7](https://versionsof.net/core/6.0/6.0.7/), that must include [.NET 6.0.7 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0), that come with the 6.0.302 SDK.
