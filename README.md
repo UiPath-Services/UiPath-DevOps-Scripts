@@ -3,7 +3,8 @@
 ### Released Date 24/04/2024
 - testing with the latest [UiPath CLI](https://docs.uipath.com/test-suite/docs/uipath-command-line-interface) as of date ([version 23.10.8753.32995](https://uipath.visualstudio.com/Public.Feeds/_artifacts/feed/UiPath-Official/NuGet/UiPath.CLI.Windows/versions/23.10.8753.32995))
 - user can specify specific CLI version to be auto downloaded from [version 23.10.8753.32995](https://uipath.visualstudio.com/Public.Feeds/_artifacts/feed/UiPath-Official/NuGet/UiPath.CLI.Windows/versions)
-- bug fixes
+- add support for new parameters in UiPathRunTest
+- bugs fixes
 
 ### Released Date 13/02/2023
 - Upgraded the scripts to use the official [UiPath CLI](https://docs.uipath.com/test-suite/docs/uipath-command-line-interface)  

@@ -15,6 +15,7 @@ Examples:
     . 'C:\scripts\UiPathRunTest.ps1' -orchestrator_url "https://uipath-orchestrator.myorg.com" -orchestrator_tenant default -UserKey a7da29a2c93a717110a82 -account_name myAccount -project_path "C:\UiPath\Project\project.json" -environment TestingEnv --out junit
     . 'C:\scripts\UiPathRunTest.ps1' -orchestrator_url "https://uipath-orchestrator.myorg.com" -orchestrator_tenant default -UserKey a7da29a2c93a717110a82 -account_name myAccount -project_path "C:\UiPath\Project\project.json" -environment TestingEnv -result_path "C:\results.json" -out uipath -language en-US
     . 'C:\scripts\UiPathRunTest.ps1' -orchestrator_url "https://uipath-orchestrator.myorg.com" -orchestrator_tenant default -UserKey a7da29a2c93a717110a82 -account_name myAccount -project_path "C:\UiPath\Project\project.json" -environment TestingEnv -result_path "C:\results.json" -input_path "C:\UiPath\Project\input-params.json" -out uipath -language en-US
+    . 'C:\scripts\UiPathRunTest.ps1' -orchestrator_url "https://uipath-orchestrator.myorg.com" -orchestrator_tenant default -UserKey a7da29a2c93a717110a82 -account_name myAccount -project_path "C:\UiPath\Project\project.json" -environment TestingEnv -result_path "C:\results.json" -input_path "C:\UiPath\Project\input-params.json" -out uipath -language en-US -attachRobotLogs "true"
 
 #Note: if script folder location is different you need to replace C: with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
 ```
@@ -83,5 +84,29 @@ Script Parameters
 - `disableTelemetry`
     Disable telemetry data.
 
--  `uipathCliFilePath`
-    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 22.10.8438.32859
+- `uipathCliFilePath`
+    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 23.10.8753.32995
+
+- `SpecificCLIVersion`
+    CLI version to auto download if uipathCliFilePath not provided. Default is "23.10.8753.32995" where the script was last tested.
+
+- `attachRobotLogs`
+    Attaches Robot Logs for each testcases along with Junit Test Report.
+
+- `repositoryUrl`
+    Repository url where project is versioned.
+
+- `repositoryCommit`
+    Repository commit where the project was built from.
+
+- `repositoryBranch`
+    Repository branch where the project was built from.
+
+- `repositoryType`
+    VCS system repository type.
+
+- `projectUrl`
+    Automation Hub idea URL.
+
+- `identityUrl`
+    Url of your identity server. This is only required for PaaS deployments.

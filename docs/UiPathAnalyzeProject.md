@@ -13,7 +13,6 @@ Examples:
     . 'C:\scripts\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json" -analyzerTraceLevel "Error" -stopOnRuleViolation true -treatWarningsAsErrors true -resultPath "C:\UiPath\Project\output.json"
     . 'C:\scripts\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json" -analyzerTraceLevel "Error" -stopOnRuleViolation true -treatWarningsAsErrors true -resultPath "C:\UiPath\Project\output.json" -ignoredRules "ST-NMG-009,ST-DBP-020,UI-USG-011,ST-DBP-020"
     . 'C:\scripts\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json" -analyzerTraceLevel "Error" -stopOnRuleViolation true -treatWarningsAsErrors true -resultPath "C:\UiPath\Project\output.json" -ignoredRules "ST-NMG-009,ST-DBP-020,UI-USG-011,ST-DBP-020" -orchestratorUrl "https://orchestratorurl.com" -orchestratorTenant "default" -orchestratorUsername "username" -orchestratorPassword "\_ye5zG9(x" -orchestratorAuthToken "AuthToken" -orchestratorAccountName "AccountName" -orchestratorFolder "OrchestratorFolder"
-    . '\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json" -analyzerTraceLevel "Error" -stopOnRuleViolation true -treatWarningsAsErrors true -resultPath . 'C:\scripts\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\output.json" -analyzerTraceLevel "Error" -ignoredRules "ST-NMG-009,ST-DBP-020,UI-USG-011,ST-DBP-020" -orchestratorUrl "https://orchestratorurl.com" -orchestratorTenant "default"  -orchestratorFolder "OrchestratorFolder" -orchestratorAccountForApp AccountName -orchestratorApplicationId e5b7*************** -orchestratorApplicationSecret *************** -orchestratorApplicationScope "OR.Analytics OR.Assets OR.Audit OR.BackgroundTasks OR.Execution OR.Folders OR.Jobs OR.Machines OR.Monitoring OR.Queues OR.Robots.Read OR.Settings OR.Tasks OR.TestSetExecutions OR.Users.Read"
     
 
 #Note: if the script folder location is different, you need to replace "C:" with directory folder (e.g. '[FOLDER_VARIABLE]\scripts\UiPathPack.ps1')
@@ -79,4 +78,7 @@ Script Parameters
     (Optional, useful only for additional package feeds) The Orchestrator tenant.
 
 -  `uipathCliFilePath`
-    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 22.10.8438.32859
+    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 23.10.8753.32995
+
+- `SpecificCLIVersion`
+    CLI version to auto download if uipathCliFilePath not provided. Default is "23.10.8753.32995" where the script was last tested.

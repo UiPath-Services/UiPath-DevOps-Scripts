@@ -83,4 +83,7 @@ Script Parameters
     Disable telemetry data.
 
 -  `uipathCliFilePath`
-    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 22.10.8438.32859
+    if not provided, the script will auto download the cli from uipath public feed. the script was tested on version 23.10.8753.32995
+
+- `SpecificCLIVersion`
+    CLI version to auto download if uipathCliFilePath not provided. Default is "23.10.8753.32995" where the script was last tested.
