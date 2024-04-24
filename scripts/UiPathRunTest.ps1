@@ -8,6 +8,9 @@
 .PARAMETER project_path 
      The path to a test package file.
 
+.PARAMETER input_path 
+     The full path to a JSON input file. Only required if the entry-point workflow has input parameters and you want to pass them from command line.
+
 .PARAMETER testset 
      The name of the test set to execute. The test set should use the latest version of the test cases. If the test set does not belong to the default folder (organization unit) it must be prefixed with the folder name, e.g. AccountingTeam\TestSet
 
@@ -65,6 +68,28 @@
 .PARAMETER uipathCliFilePath
     if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8432.18709. if provided, it is recommended to have cli version 22.10.8432.18709 
 
+.PARAMETER attachRobotLogs
+    Attaches Robot Logs for each testcases along with Junit Test Report.
+
+.PARAMETER repositoryUrl
+    Repository url where project is versioned.
+
+.PARAMETER repositoryCommit
+    Repository commit where the project was built from.
+
+.PARAMETER repositoryBranch
+    Repository branch where the project was built from.
+
+.PARAMETER repositoryType
+    VCS system repository type.
+
+.PARAMETER projectUrl
+    Automation Hub idea URL.
+
+.PARAMETER identityUrl
+    Url of your identity server. This is only required for PaaS deployments.
+
+
 .EXAMPLE
 SYNTAX
    .\UiPathRunTest.ps1 <orchestrator_url> <orchestrator_tenant> [-input_path <input_path>] [-project_path <package>] [-testset <testset>] [-orchestrator_user <orchestrator_user> -orchestrator_pass <orchestrator_pass>] [-UserKey <auth_token> -account_name <account_name>] [-accountForApp <account_for_app> -applicationId <application_id> -applicationSecret <application_secret> -applicationScope <applicationScope>] [-environment <environment>] [-folder_organization_unit <folder_organization_unit>] [-language <language>]
@@ -114,6 +139,16 @@ Param (
     [string] $out = "", #Type of result file
     [string] $traceLevel = "", 
     [string] $uipathCliFilePath = "", #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 23.10.8753.32995.
+    [string] $SpecificCLIVersion = "", #CLI version to auto download if uipathCliFilePath not provided. Default is "23.10.8753.32995" where the script was last tested,
+
+    [string] $attachRobotLogs = "", #Attaches Robot Logs for each testcases along with Junit Test Report.
+    [string] $repositoryUrl = "", #Repository url where project is versioned.
+    [string] $repositoryCommit = "", #    Repository commit where the project was built from.
+    [string] $repositoryBranch = "", #    Repository branch where the project was built from.
+    [string] $repositoryType = "", #    VCS system repository type.
+    [string] $projectUrl = "", #    Automation Hub idea URL.
+    [string] $identityUrl = "", #Url of your identity server. This is only required for PaaS deployments.
+
     [Parameter(ValueFromRemainingArguments = $true)]
     $remainingArgs
 
@@ -146,7 +181,12 @@ if($uipathCliFilePath -ne ""){
     }
 }else{
     #Verifying UiPath CLI installation
-    $cliVersion = "23.10.8753.32995"; #CLI Version (Script was tested on this latest version at the time)
+    if($SpecificCLIVersion -ne ""){
+        $cliVersion = $SpecificCLIVersion;
+    }
+    else{
+        $cliVersion = "23.10.8753.32995"; #CLI Version (Script was tested on this latest version at the time)
+    }
 
     $uipathCLI = "$scriptPath\uipathcli\$cliVersion\tools\uipcli.exe"
     if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
@@ -284,6 +324,40 @@ if($disableTelemetry -ne ""){
     $ParamList.Add("--disableTelemetry")
     $ParamList.Add($disableTelemetry)
 }
+if($attachRobotLogs -ne ""){
+    $ParamList.Add("--attachRobotLogs")
+    $ParamList.Add("`"$attachRobotLogs`"")
+}
+if($repositoryUrl -ne ""){
+    $ParamList.Add("--repositoryUrl")
+    $ParamList.Add("`"$repositoryUrl`"")
+}
+if($repositoryCommit -ne ""){
+    $ParamList.Add("--repositoryCommit")
+    $ParamList.Add("`"$repositoryCommit`"")
+}
+
+if($repositoryBranch -ne ""){
+    $ParamList.Add("--repositoryBranch")
+    $ParamList.Add("`"$repositoryBranch`"")
+}
+
+if($repositoryType -ne ""){
+    $ParamList.Add("--repositoryType")
+    $ParamList.Add("`"$repositoryType`"")
+}
+
+if($projectUrl -ne ""){
+    $ParamList.Add("--projectUrl")
+    $ParamList.Add("`"$projectUrl`"")
+}
+
+if($identityUrl -ne ""){
+    $ParamList.Add("--identityUrl")
+    $ParamList.Add("`"$identityUrl`"")
+}
+
+
 
 
 #mask sensitive infos before loging
