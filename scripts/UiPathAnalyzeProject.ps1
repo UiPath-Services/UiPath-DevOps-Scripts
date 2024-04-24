@@ -57,7 +57,7 @@
     (Optional, useful only for additional package feeds) The Orchestrator tenant.
 
 .PARAMETER uipathCliFilePath
-    if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8438.32859
+    if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 23.10.8753.32995
 
 .EXAMPLE
 SYNTAX
@@ -70,11 +70,13 @@ Examples:
     . '\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json" -analyzerTraceLevel "Error" -stopOnRuleViolation true -treatWarningsAsErrors true -resultPath "C:\UiPath\Project\output.json"
     . '\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json" -analyzerTraceLevel "Error" -stopOnRuleViolation true -treatWarningsAsErrors true -resultPath "C:\UiPath\Project\output.json" -ignoredRules "ST-NMG-009,ST-DBP-020,UI-USG-011,ST-DBP-020"
     . '\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json" -analyzerTraceLevel "Error" -stopOnRuleViolation true -treatWarningsAsErrors true -resultPath "C:\UiPath\Project\output.json" -ignoredRules "ST-NMG-009,ST-DBP-020,UI-USG-011,ST-DBP-020" -orchestratorUrl "https://orchestratorurl.com" -orchestratorTenant "default" -orchestratorUsername "username" -orchestratorPassword "\_ye5zG9(x" -orchestratorAuthToken "AuthToken" -orchestratorAccountName "AccountName" -orchestratorFolder "OrchestratorFolder"
-    
+    . '\UiPathAnalyzeProject.ps1' "C:\UiPath\Project\project.json" -analyzerTraceLevel "Error" -stopOnRuleViolation true -treatWarningsAsErrors true -resultPath "C:\UiPath\Project\output.json" -ignoredRules "ST-NMG-009,ST-DBP-020,UI-USG-011,ST-DBP-020" -orchestratorUrl "https://orchestratorurl.com" -orchestratorTenant "default"  -orchestratorFolder "OrchestratorFolder" -orchestratorAccountForApp AccountName -orchestratorApplicationId e5b7*************** -orchestratorApplicationSecret *************** -orchestratorApplicationScope "OR.Analytics OR.Assets OR.Audit OR.BackgroundTasks OR.Execution OR.Folders OR.Jobs OR.Machines OR.Monitoring OR.Queues OR.Robots.Read OR.Settings OR.Tasks OR.TestSetExecutions OR.Users.Read"
     #>
     Param (
 
         #Required
+
+        [Parameter(Mandatory=$true, Position = 0)]
         [string] $ProjectPath = "", # Required. Path to a project.json file or a folder containing project.json files.
         [string] $analyzerTraceLevel = "", #Specifies what types of messages to output (Off|Error|Warning|Info|Verbose).
         [string] $stopOnRuleViolation = "", #Fail the job when any rule is violated.
@@ -92,7 +94,9 @@ Examples:
         [string] $orchestratorFolder = "", #(Optional, useful only for additional package feeds) The Orchestrator folder (organization unit).
         [string] $orchestratorUrl = "", #(Optional, useful only for additional package feeds) The Orchestrator URL.
         [string] $orchestratorTenant = "", #(Optional, useful only for additional package feeds) The Orchestrator tenant.    
-        [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8432.18709. if provided, it is recommended to have cli version 22.10.8432.18709 
+        [string] $uipathCliFilePath = "", #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8432.18709. if provided, it is recommended to have cli version 22.10.8432.18709 
+        [Parameter(ValueFromRemainingArguments = $true)]
+        $remainingArgs
     
     )
     #Log function
@@ -124,7 +128,7 @@ Examples:
         }
     }else{
         #Verifying UiPath CLI installation
-        $cliVersion = "22.10.8438.32859"; #CLI Version (Script was tested on this latest version at the time)
+        $cliVersion = "23.10.8753.32995"; #CLI Version (Script was tested on this latest version at the time)
 
         $uipathCLI = "$scriptPath\uipathcli\$cliVersion\tools\uipcli.exe"
         if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
@@ -169,7 +173,7 @@ Examples:
     #Building uipath cli paramters
     $ParamList.Add("package")
     $ParamList.Add("analyze")
-    $ParamList.Add($ProjectPath)
+    $ParamList.Add("`"$ProjectPath`"")
     
     
     if($analyzerTraceLevel -ne ""){

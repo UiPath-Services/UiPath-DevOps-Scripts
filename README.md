@@ -1,12 +1,17 @@
 
 ## Release Notes
+### Released Date 24/04/2024
+- testing with the latest [UiPath CLI](https://docs.uipath.com/test-suite/docs/uipath-command-line-interface) as of date ([version 23.10.8753.32995](https://uipath.visualstudio.com/Public.Feeds/_artifacts/feed/UiPath-Official/NuGet/UiPath.CLI.Windows/versions/23.10.8753.32995))
+- user can specify specific CLI version to be auto downloaded from [version 23.10.8753.32995](https://uipath.visualstudio.com/Public.Feeds/_artifacts/feed/UiPath-Official/NuGet/UiPath.CLI.Windows/versions)
+- bug fixes
+
 ### Released Date 13/02/2023
 - Upgraded the scripts to use the official [UiPath CLI](https://docs.uipath.com/test-suite/docs/uipath-command-line-interface)  
 - for self-hosted agents, add paramter to provide path of the UiPath CLI if available on the machine instead of auto downloading the scrip 
 # UiPath DevOps Scripts 🤖
 
-Package, deploy, run automations, tests & manage assets.  
-[Youtube Video](https://www.youtube.com/watch?v=asdh8XTUQtQ)  
+Package, deploy, run automations, run tests, manage assets, and analyze automatin projects.  
+[Youtube Video](https://www.youtube.com/watch?v=asdh8XTUQtQ) The video was created when the library was first released, so it does not include any features added afterward.
 [![Youtube Video](https://img.youtube.com/vi/asdh8XTUQtQ/0.jpg)](https://www.youtube.com/watch?v=asdh8XTUQtQ)
 
 
@@ -14,7 +19,7 @@ Package, deploy, run automations, tests & manage assets.
 
 More and more customers are requesting integrations of uipath platform to other platforms like GitLab and Circle CI and UiPath is not able to create native plugins for all of them.
 
-This library of DevOps PowerShell scripts will support customers to facilitate the interaction with the offical UiPath CLI to integrate CI/CD into their workflows and allow them to package, deploy and run automations and tests.
+This **unofficial** library of DevOps PowerShell scripts will support customers to facilitate the interaction with the offical UiPath CLI to integrate CI/CD into their workflows and allow them to package, deploy and run automations and tests.
 
 ## Prerequisite:
 
@@ -76,6 +81,8 @@ Five available scripts can be utilized
 Each script will log all output to its own `*.log` file and sometimes to the console.
 
 ### Dependency
+
 `The scripts will automatically download the UiPath.CLI during the runtime.`  
-- [Official UiPath CLI](https://uipath.visualstudio.com/Public.Feeds/_artifacts/feed/UiPath-Official/NuGet/UiPath.CLI.Windows/overview/22.10.8438.32859)
+- [Official UiPath CLI](https://uipath.visualstudio.com/Public.Feeds/_artifacts/feed/UiPath-Official/NuGet/UiPath.CLI.Windows/overview/23.10.8753.32995)
 - UiPath CLI prerequesites: [.NET 6.0.7](https://versionsof.net/core/6.0/6.0.7/), that must include [.NET 6.0.7 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0), that come with the 6.0.302 SDK.
+

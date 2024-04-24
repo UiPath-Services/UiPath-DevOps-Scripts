@@ -86,7 +86,7 @@ SYNTAX:
 Param (
 
     #Required
-    
+    [Parameter(Mandatory=$true, Position = 0)]
 	[string] $project_path = "", # Required. Path to a project.json file or a folder containing project.json files.
     [string] $destination_folder = "", #Required. Destination folder.
 	[string] $libraryOrchestratorUrl = "", #Required. The URL of the Orchestrator instance.
@@ -112,7 +112,10 @@ Param (
     [switch] $autoVersion, #Auto-generate package version.
     [string] $outputType = "", #Force the output to a specific type.  
     [string] $disableTelemetry = "", #Disable telemetry data.
-    [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8438.32859.
+    [string] $uipathCliFilePath = "", #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 23.10.8753.32995.
+    [string] $SpecificCLIVersion = "", #CLI version to auto download if uipathCliFilePath not provided
+    [Parameter(ValueFromRemainingArguments = $true)]
+    $remainingArgs
 
     
 
@@ -146,9 +149,14 @@ if($uipathCliFilePath -ne ""){
         exit 1
     }
 }else{
+    
+    if($SpecificCLIVersion -ne ""){
+        $cliVersion = $SpecificCLIVersion;
+    }
+    else{
+        $cliVersion = "23.10.8753.32995"; #CLI Version (Script was tested on this latest version at the time)
+    }
     #Verifying UiPath CLI installation
-    $cliVersion = "22.10.8438.32859"; #CLI Version (Script was tested on this latest version at the time)
-
     $uipathCLI = "$scriptPath\uipathcli\$cliVersion\tools\uipcli.exe"
     if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
         WriteLog "UiPath CLI does not exist in this folder. Attempting to download it..."
@@ -188,9 +196,9 @@ if($project_path -eq "" -or $destination_folder -eq "")
 }
 $ParamList.Add("package")
 $ParamList.Add("pack")
-$ParamList.Add($project_path)
+$ParamList.Add("`"$project_path`"")
 $ParamList.Add("--output")
-$ParamList.Add($destination_folder)
+$ParamList.Add("`"$destination_folder`"")
 
 if($libraryOrchestratorUrl -ne ""){
     $ParamList.Add("--libraryOrchestratorUrl")
@@ -230,11 +238,11 @@ if($libraryOrchestratorApplicationSecret -ne ""){
 }
 if($libraryOrchestratorApplicationScope -ne ""){
     $ParamList.Add("--libraryOrchestratorApplicationScope")
-    $ParamList.Add($libraryOrchestratorApplicationScope)
+    $ParamList.Add("`"$libraryOrchestratorApplicationScope`"")
 }
 if($libraryOrchestratorFolder -ne ""){
     $ParamList.Add("--libraryOrchestratorFolder")
-    $ParamList.Add($libraryOrchestratorFolder)
+    $ParamList.Add("`"$libraryOrchestratorFolder`"")
 }
 if($language -ne ""){
     $ParamList.Add("--language")

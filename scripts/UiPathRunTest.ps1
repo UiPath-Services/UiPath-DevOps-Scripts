@@ -113,7 +113,9 @@ Param (
     [string] $timeout = "", # The time in seconds for waiting to finish test set executions. (default 7200) 
     [string] $out = "", #Type of result file
     [string] $traceLevel = "", 
-    [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8438.32859.
+    [string] $uipathCliFilePath = "", #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 23.10.8753.32995.
+    [Parameter(ValueFromRemainingArguments = $true)]
+    $remainingArgs
 
 )
 function WriteLog
@@ -144,7 +146,7 @@ if($uipathCliFilePath -ne ""){
     }
 }else{
     #Verifying UiPath CLI installation
-    $cliVersion = "22.10.8438.32859"; #CLI Version (Script was tested on this latest version at the time)
+    $cliVersion = "23.10.8753.32995"; #CLI Version (Script was tested on this latest version at the time)
 
     $uipathCLI = "$scriptPath\uipathcli\$cliVersion\tools\uipcli.exe"
     if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
@@ -208,11 +210,11 @@ $ParamList.Add($orchestrator_tenant)
 
 if($project_path -ne ""){
     $ParamList.Add("--project-path")
-    $ParamList.Add($project_path)
+    $ParamList.Add("`"$project_path`"")
 }
 if($input_path -ne ""){
     $ParamList.Add("--input_path")
-    $ParamList.Add($input_path)
+    $ParamList.Add("`"$input_path`"")
 }
 if($testset -ne ""){
     $ParamList.Add("--testset")
@@ -220,7 +222,7 @@ if($testset -ne ""){
 }
 if($result_path -ne ""){
     $ParamList.Add("--result_path")
-    $ParamList.Add($result_path)
+    $ParamList.Add("`"$result_path`"")
 }
 if($accountForApp -ne ""){
     $ParamList.Add("--accountForApp")
@@ -256,7 +258,7 @@ if($orchestrator_pass -ne ""){
 }
 if($folder_organization_unit -ne ""){
     $ParamList.Add("--organizationUnit")
-    $ParamList.Add($folder_organization_unit)
+    $ParamList.Add("`"$folder_organization_unit`"")
 }
 if($environment -ne ""){
     $ParamList.Add("--environment")
