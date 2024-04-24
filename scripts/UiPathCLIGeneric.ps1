@@ -41,7 +41,7 @@ if($uipathCliFilePath -ne ""){
     }
 }else{
     #Verifying UiPath CLI installation
-    $cliVersion = "22.10.8438.32859"; #CLI Version (Script was tested on this latest version at the time)
+    $cliVersion = "23.10.8753.32995"; #CLI Version (Script was tested on this latest version at the time)
 
     $uipathCLI = "$scriptPath\uipathcli\$cliVersion\tools\uipcli.exe"
     if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {

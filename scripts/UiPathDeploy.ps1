@@ -71,9 +71,13 @@ SYNTAX
 Param (
 
     #Required
+    [Parameter(Mandatory=$true, Position = 0)]
 	[string] $packages_path = "", # Required. The path to a folder containing packages, or to a package file.
+    [Parameter(Mandatory=$true, Position = 1)]
 	[string] $orchestrator_url = "", #Required. The URL of the Orchestrator instance.
+    [Parameter(Mandatory=$true, Position = 2)]
 	[string] $orchestrator_tenant = "", #Required. The tenant of the Orchestrator instance.
+
 
     #External Apps (Option 1)
     [string] $accountForApp = "", #The Orchestrator CloudRPA account name. Must be used together with id, secret and scope(s) for external application.
@@ -94,7 +98,10 @@ Param (
     [string] $environment_list = "", #The comma-separated list of environments to deploy the package to. If the environment does not belong to the default folder (organization unit) it must be prefixed with the folder name, e.g. AccountingTeam\TestEnvironment
     [string] $entryPoints = "", #Define the specific entry points to create or update a process. This is the filePath of the entry point starting from the root of the project. For classic folders only one entry point can be specified, for each environment it will be created or updated a process with the specified entry point.
     [string] $disableTelemetry = "", #Disable telemetry data.   
-    [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8438.32859
+    [string] $uipathCliFilePath = "" , #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 23.10.8753.32995.
+    [string] $SpecificCLIVersion = "", #CLI version to auto download if uipathCliFilePath not provided
+    [Parameter(ValueFromRemainingArguments = $true)]
+    $remainingArgs
     
     
     
@@ -129,7 +136,12 @@ if($uipathCliFilePath -ne ""){
     }
 }else{
     #Verifying UiPath CLI installation
-    $cliVersion = "22.10.8438.32859"; #CLI Version (Script was tested on this latest version at the time)
+    if($SpecificCLIVersion -ne ""){
+        $cliVersion = $SpecificCLIVersion;
+    }
+    else{
+        $cliVersion = "23.10.8753.32995"; #CLI Version (Script was tested on this latest version at the time)
+    }
 
     $uipathCLI = "$scriptPath\uipathcli\$cliVersion\tools\uipcli.exe"
     if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
@@ -185,7 +197,7 @@ if($accountForApp -eq "" -or $applicationId -eq "" -or $applicationSecret -eq ""
 #Building uipath cli paramters
 $ParamList.Add("package")
 $ParamList.Add("deploy")
-$ParamList.Add($packages_path)
+$ParamList.Add("`"$packages_path`"")
 $ParamList.Add($orchestrator_url)
 $ParamList.Add($orchestrator_tenant)
 
@@ -223,7 +235,7 @@ if($orchestrator_pass -ne ""){
 }
 if($folder_organization_unit -ne ""){
     $ParamList.Add("--organizationUnit")
-    $ParamList.Add($folder_organization_unit)
+    $ParamList.Add("`"$folder_organization_unit`"")
 }
 if($environment_list -ne ""){
     $ParamList.Add("--environments")
@@ -241,7 +253,7 @@ if($disableTelemetry -ne ""){
 }
 if($entryPoints -ne ""){
     $ParamList.Add("--entryPointsPath")
-    $ParamList.Add($entryPoints)
+    $ParamList.Add("`"$entryPoints`"")
 }
 
 #mask sensitive info before logging 

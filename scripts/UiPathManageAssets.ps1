@@ -79,10 +79,13 @@ SYNTAX
     Param (
 
         #Required
+        [Parameter(Mandatory=$true, Position = 0)]
         [string] $operation = "", #Manage assets operation (delete | deploy) 
+        [Parameter(Mandatory=$true, Position = 1)]
         [string] $assets_file = "", #Assets file
-        
+        [Parameter(Mandatory=$true, Position = 2)]
         [string] $orchestrator_url = "", #Required. The URL of the Orchestrator instance.
+        [Parameter(Mandatory=$true, Position = 3)]
         [string] $orchestrator_tenant = "", #Required. The tenant of the Orchestrator instance.
     
         #External Apps (Option 1)
@@ -103,7 +106,10 @@ SYNTAX
         [string] $language = "", #-l, --language                  The orchestrator language.  
         [string] $disableTelemetry = "", #-y, --disableTelemetry          Disable telemetry data.   
         [string] $timeout = "", # The time in seconds for waiting to finish test set executions. (default 7200) 
-        [string] $uipathCliFilePath = "" #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 22.10.8438.32859
+        [string] $uipathCliFilePath = "" , #if not provided, the script will auto download the cli from uipath public feed. the script was testing on version 23.10.8753.32995.
+        [string] $SpecificCLIVersion = "", #CLI version to auto download if uipathCliFilePath not provided
+        [Parameter(ValueFromRemainingArguments = $true)]
+        $remainingArgs
     
     )
     
@@ -135,7 +141,13 @@ SYNTAX
         }
     }else{
         #Verifying UiPath CLI installation
-        $cliVersion = "22.10.8438.32859"; #CLI Version (Script was tested on this latest version at the time)
+        if($SpecificCLIVersion -ne ""){
+            $cliVersion = $SpecificCLIVersion;
+        }
+        else{
+            $cliVersion = "23.10.8753.32995"; #CLI Version (Script was tested on this latest version at the time)
+        }
+        
 
         $uipathCLI = "$scriptPath\uipathcli\$cliVersion\tools\uipcli.exe"
         if (-not(Test-Path -Path $uipathCLI -PathType Leaf)) {
@@ -206,7 +218,7 @@ SYNTAX
     #region Building uipath cli paramters
     $ParamList.Add("asset")
     $ParamList.Add("$operation")
-    $ParamList.Add($assets_file)
+    $ParamList.Add("`"$assets_file`"")
     $ParamList.Add($orchestrator_url)
     $ParamList.Add($orchestrator_tenant)
     
@@ -244,7 +256,7 @@ SYNTAX
     }
     if($folder_organization_unit -ne ""){
         $ParamList.Add("--organizationUnit")
-        $ParamList.Add($folder_organization_unit)
+        $ParamList.Add("`"$folder_organization_unit`"")
     }
     if($language -ne ""){
         $ParamList.Add("--language")
